@@ -20,12 +20,12 @@ To ensure successful build of this project, `project.properties['java.version']`
 	</properties>
 </project>
 ```
-```json
-// .devcontainer/devcontainer.json
+```yaml
+# .devcontainer/devcontainer.json
 "features": {
-    // https://github.com/devcontainers/features/tree/main/src/java
+    # https://github.com/devcontainers/features/tree/main/src/java
     "ghcr.io/devcontainers/features/java:1": {
-        "version": "17", // Version must match with pom.xml
+        "version": "17" # Version must match with pom.xml
     }
 }
 ```
