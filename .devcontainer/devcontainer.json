@@ -11,11 +11,13 @@
 			"enableNonRootDocker": "true",
 			"moby": "true"
 		},
-		"ghcr.io/devcontainers/features/java:1": {},
-		"ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
-		"ghcr.io/devcontainers-contrib/features/gradle-sdkman:2": {},
-		"ghcr.io/devcontainers-contrib/features/homebrew-package:1": {},
-		"ghcr.io/devcontainers-contrib/features/maven-sdkman:2": {},
+		// https://github.com/devcontainers/features/tree/main/src/java
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "17", // Version should match with pom.xml
+			"jdkDistro": "ms", // Install OpenJDK (Microsoft). See available JDK distributions from https://sdkman.io/jdks
+			"installGradle": true,
+			"installMaven": true
+		},
 		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
 	},
 
@@ -36,17 +38,33 @@
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode",
 
-	// Mounts
-	"mounts": [
-		{
-			"source": "${localEnv:HOME}/.m2",
-			"target": "/home/vscode/.m2",
-			"type": "bind"
-		},
-		{
-			"source": "${localEnv:HOME}/.ssh",
-			"target": "/home/vscode/.ssh",
-			"type": "bind"
+	"runArgs": [
+		// Reuse Host Maven Cache
+		"--volume=${localEnv:HOME}${localEnv:USERPROFILE}/.m2:/home/vscode/.m2",
+		// Reuse Host SSH Keys
+		"--volume=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh:/home/vscode/.ssh"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack",
+				"ms-azuretools.vscode-docker",
+				"github.vscode-github-actions"
+			]
 		}
-	]
+	}
+
+	// Mounts - throws error when source directory does not exist
+	// "mounts": [
+	// 	{
+	// 		"source": "${localEnv:HOME}/.m2",
+	// 		"target": "/home/vscode/.m2",
+	// 		"type": "bind"
+	// 	},
+	// 	{
+	// 		"source": "${localEnv:HOME}/.ssh",
+	// 		"target": "/home/vscode/.ssh",
+	// 		"type": "bind"
+	// 	}
+	// ]
 }

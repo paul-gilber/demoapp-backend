@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codewitharjun</groupId>
-	<artifactId>fullstack-backend</artifactId>
+	<artifactId>demoapp-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>fullstack-backend</name>
+	<name>demoapp-backend</name>
 	<description>Backend application </description>
 	<properties>
 		<java.version>17</java.version>
