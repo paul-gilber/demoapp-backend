@@ -49,7 +49,11 @@
 			"extensions": [
 				"vscjava.vscode-java-pack",
 				"ms-azuretools.vscode-docker",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"vscjava.vscode-maven",
+				"vscjava.vscode-java-dependency",
+				"vscjava.vscode-java-test",
+				"vscjava.vscode-java-debug"
 			]
 		}
 	}
