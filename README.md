@@ -32,10 +32,58 @@ To ensure successful build of this project, `project.properties['java.version']`
 ```sh
 mvn clean install -Dmaven.test.skip=true
 ```
-### Build and Run Application Container
+### Build Application Container
 ```sh
 docker build -f Containerfile -t demoapp-backend .
-docker run -p 8080:8080 demoapp-backend
+```
+
+## Run Application from Visual Studio Code Dev Container
+### Run Application using Java
+```sh
+java -jar target/demoapp-backend-0.0.1-SNAPSHOT.jar
+# Note: Application startup will fail due to the absence of mysql database
+```
+### Run Application using Docker Compose
+[Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. Then, with a single command, you create and start all the services from your configuration.
+
+By default, Compose looks up configuration from [compose.yaml](compose.yaml).
+To ensure successful run of the Application, `spring.datasource.url` from [application.properties](src/main/resources/application.properties) must match with [compose.yaml](compose.yaml)
+```sh
+# src/main/resources/application.properties
+spring.datasource.url=jdbc:mysql://mysql:3306/demoapp
+# Database credentials must not be hardcoded and should be provided using Environment variables
+# Externalized Spring Configuration: https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-external-config.html
+spring.datasource.username=  # Environment variable: SPRING_DATASOURCE_USERNAME
+spring.datasource.password=  # Environment variable: SPRING_DATASOURCE_PASSWORD
+```
+```yaml
+# compose.yaml
+services:
+  mysql: # Service name is also used as hostname when connecting from other containers
+    environment:
+      MYSQL_ROOT_PASSWORD: local
+      MYSQL_DATABASE: demoapp
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    healthcheck:
+      test: mysql --host=localhost --user=root --password=$$MYSQL_ROOT_PASSWORD demoapp # Login to mysql demoapp db. `$$` tells docker compose not to parse `MYSQL_ROOT_PASSWORD` environment variable
+  demoapp-backend:
+    depends_on:
+      mysql:
+        condition: service_healthy # Ensure `mysql` health before starting `demoapp-backend` container
+    environment:
+      # Externalized Spring Configuration: https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-external-config.html
+      SPRING_DATASOURCE_USERNAME: root  # Overrides application.properties `spring.datasource.username`
+      SPRING_DATASOURCE_PASSWORD: local # Overrides application.properties `spring.datasource.password`
+    healthcheck:
+      test: curl --fail http://localhost:8080/actuator/health # Check Spring Boot Actuator. Requires `org.springframework.boot:spring-boot-starter-actuator` dependency in pom.xml
+    ports:
+      - "8080:8080" # Forwards container port 8080 to host port 8080. URL: http://localhost:8080/. Actuator URL: http://localhost:8080/actuator/health
+```
+```sh
+docker-compose up # builds application image when it doesn't exist
+docker-compose up --build # rebuild application image
+docker-compose down # remove containers and network created by docker compose 
 ```
 
 ## Changes
@@ -43,3 +91,5 @@ docker run -p 8080:8080 demoapp-backend
 2. Removal of hardcoded credentials in [application.properties](./src/main/resources/application.properties)
 3. Replacement of `localhost` hostname for mysql database url with `mysql` in [application.properties](./src/main/resources/application.properties)
 4. Creation of [Containerfile](./Containerfile)
+5. Creation of [compose.yaml](./compose.yaml)
+6. Enablement of Spring Boot Actuator in [pom.xml](./pom.xml)

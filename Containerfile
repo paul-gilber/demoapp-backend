@@ -6,7 +6,8 @@ ARG MAVEN_ARGS="-Dmaven.test.skip=true"
 FROM ${BUILD_IMAGE} as build
 ARG MAVEN_ARGS
 
-COPY . ./
+COPY src ./src
+COPY pom.xml ./pom.xml
 RUN mvn "${MAVEN_ARGS[@]}" clean package
 
 # APP
