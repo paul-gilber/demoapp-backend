@@ -30,6 +30,7 @@ To ensure successful build of this project, `project.properties['java.version']`
 }
 ```
 ```sh
+# Skip tests due to the absence of `mysql` dependency
 mvn clean install -Dmaven.test.skip=true
 ```
 ### Build Application Container
