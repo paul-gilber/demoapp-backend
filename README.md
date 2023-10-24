@@ -4,14 +4,12 @@ This project was forked from: [arjungautam1/fullstack-backend](https://github.co
 ## Dependencies
 1. MySQL database instance
 
-## Visual Studio Code Dev Container Configuration
-
-## Build Application
-### Build Application JAR from Dev Container
+## Build Application from Visual Studio Code Dev Container
 This project uses [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) which provides consistent Development environment across user(s) or team(s).
 
 Visual Studio Code Dev Containers extension looks up [devcontainer.json](.devcontainer/devcontainer.json) file which defines the Container environment specification.
 
+### Build Application JAR
 To ensure successful build of this project, `project.properties['java.version']` value from [pom.xml](pom.xml) must match with `features['ghcr.io/devcontainers/features/java:1'].version` from [devcontainer.json](.devcontainer/devcontainer.json)
 ```xml
 <!-- pom.xml -->
