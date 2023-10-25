@@ -16,7 +16,8 @@
 			"version": "17", // Version should match with pom.xml
 			"jdkDistro": "ms", // Install OpenJDK (Microsoft). See available JDK distributions from https://sdkman.io/jdks
 			"installGradle": true,
-			"installMaven": true
+			"installMaven": true,
+			"installAnt": true
 		},
 		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
 	},
