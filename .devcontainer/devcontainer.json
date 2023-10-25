@@ -3,15 +3,25 @@
 {
 	"name": "Docker outside of Docker",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	// "image": "mcr.microsoft.com/devcontainers/base:bullseye",
 
+	// Use Docker Compose File
+	"dockerComposeFile": "compose.yaml",
+	// Service to connect from Docker Compose File
+	"service": "devcontainer",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}", // indicates where to mount the workspace folder. This corresponds to a sub-folder under the mount point from ../..:/workspaces:cached in the docker-compose.yml file
+
+	// Available features: https://containers.dev/features
 	"features": {
+		// Preserve shell command history: https://github.com/stuartleeks/dev-container-features
+		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+		// Use host's docker: https://github.com/devcontainers/features/tree/main/src/docker-outside-of-docker
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
 			"version": "latest",
 			"enableNonRootDocker": "true",
 			"moby": "true"
 		},
-		// https://github.com/devcontainers/features/tree/main/src/java
+		// Install JAVA: https://github.com/devcontainers/features/tree/main/src/java
 		"ghcr.io/devcontainers/features/java:1": {
 			"version": "17", // Version should match with pom.xml
 			"jdkDistro": "ms", // Install OpenJDK (Microsoft). See available JDK distributions from https://sdkman.io/jdks
@@ -19,7 +29,8 @@
 			"installMaven": true,
 			"installAnt": true
 		},
-		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+		// Install Homebrew: https://github.com/meaningful-ooo/devcontainer-features/tree/main/src/homebrew
+		"ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
 	},
 
 	// Use this environment variable if you need to bind mount your local source code into a new container.
@@ -31,7 +42,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "docker --version",
+	"postCreateCommand": ".devcontainer/postCreateCommand.sh", 
 
 	// Configure tool-specific properties.
 	// "customizations": {},
@@ -39,12 +50,6 @@
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode",
 
-	"runArgs": [
-		// Reuse Host Maven Cache
-		"--volume=${localEnv:HOME}${localEnv:USERPROFILE}/.m2:/home/vscode/.m2",
-		// Reuse Host SSH Keys
-		"--volume=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh:/home/vscode/.ssh"
-	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -54,22 +59,24 @@
 				"vscjava.vscode-maven",
 				"vscjava.vscode-java-dependency",
 				"vscjava.vscode-java-test",
-				"vscjava.vscode-java-debug"
+				"vscjava.vscode-java-debug",
+				"cweijan.vscode-mysql-client2"
 			]
 		}
-	}
+	},
 
-	// Mounts - throws error when source directory does not exist
-	// "mounts": [
-	// 	{
-	// 		"source": "${localEnv:HOME}/.m2",
-	// 		"target": "/home/vscode/.m2",
-	// 		"type": "bind"
-	// 	},
-	// 	{
-	// 		"source": "${localEnv:HOME}/.ssh",
-	// 		"target": "/home/vscode/.ssh",
-	// 		"type": "bind"
-	// 	}
-	// ]
+	"mounts": [
+		// Mount Host Maven Cache
+		{
+			"source": "${localEnv:HOME}${localEnv:USERPROFILE}/.m2",
+			"target": "/home/vscode/.m2",
+			"type": "bind"
+		},
+		// Mount Host SSH Keys and Configs
+		{
+			"source": "${localEnv:HOME}${localEnv:USERPROFILE}/.ssh",
+			"target": "/home/vscode/.ssh",
+			"type": "bind"
+		}
+	]
 }

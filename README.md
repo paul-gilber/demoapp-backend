@@ -30,8 +30,12 @@ To ensure successful build of this project, `project.properties['java.version']`
 }
 ```
 ```sh
-# Skip tests due to the absence of `mysql` dependency
+# Build and run tests
+mvn clean install
+# Build and skip tests
 mvn clean install -Dmaven.test.skip=true
+
+# Note: Visual Studio Dev Container creates and runs `mysql` service. To add other dependency services, update `.devcontainer/compose.yaml`
 ```
 ### Build Application Container
 ```sh
