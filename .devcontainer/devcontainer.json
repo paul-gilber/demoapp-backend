@@ -30,7 +30,15 @@
 			"installAnt": true
 		},
 		// Install Homebrew: https://github.com/meaningful-ooo/devcontainer-features/tree/main/src/homebrew
-		"ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
+		"ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+		// Install jq, yq, gojq, xq, jaq : https://github.com/eitsupi/devcontainer-features/tree/main/src/jq-likes
+		"ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {
+			"jqVersion": "latest",
+			"yqVersion": "latest",
+			"gojqVersion": "latest"
+		},
+		// Install yamllint: https://github.com/devcontainers-contrib/features/tree/main/src/yamllint
+		"ghcr.io/devcontainers-contrib/features/yamllint:2": {}
 	},
 
 	// Use this environment variable if you need to bind mount your local source code into a new container.
