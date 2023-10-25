@@ -8,7 +8,9 @@ import javax.persistence.Id;
 @Entity
 public class User {
 
-    @Id
+    // Spring Boot to Quarkus Migration: Replace Spring Boot's @Id annotation with Quarkus's @BsonId
+    // @Id
+    @BsonId
     @GeneratedValue
     private Long id;
     private String username;

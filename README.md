@@ -100,3 +100,6 @@ docker-compose down # remove containers and network created by docker compose
 4. Creation of [Containerfile](./Containerfile)
 5. Creation of [compose.yaml](./compose.yaml)
 6. Enablement of Spring Boot Actuator in [pom.xml](./pom.xml)
+
+## References
+- [Migrating a Spring Boot microservices application to Quarkus](https://developers.redhat.com/blog/2020/04/10/migrating-a-spring-boot-microservices-application-to-quarkus#the_spring_boot_application)
