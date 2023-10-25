@@ -40,6 +40,8 @@ mvn clean install -Dmaven.test.skip=true
 ### Build Application Container
 ```sh
 docker build -f Containerfile -t demoapp-backend .
+# Testing Application Container Structure using Container Structure Test https://github.com/GoogleContainerTools/container-structure-test
+container-structure-test test --image demoapp-backend --config container-structure-test.yaml
 ```
 
 ## Run Application from Visual Studio Code Dev Container
