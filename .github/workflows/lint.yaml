@@ -1,0 +1,15 @@
+name: Lint Files
+
+# Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
+      - name: YAML Lint
+        run: yamllint .   # yamllint is pre-installed: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md#tools
