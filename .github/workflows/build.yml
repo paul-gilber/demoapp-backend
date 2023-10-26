@@ -12,13 +12,6 @@ on:
   workflow_dispatch:
 jobs:
   lint:
-    runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
-    steps:
-      - name: Clone
-        uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
-      - name: List files
-        run: ls -a
-      - name: Lint files
-        uses: ./.github/workflows/lint.yml
-        with:
-          yaml: 'true'
+    uses: ./.github/workflows/lint.yml    # Workflow calls need to be executed as jobs
+    with:
+      yaml: true
