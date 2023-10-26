@@ -17,7 +17,7 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
       - name: List files
-        run: ls
+        run: ls -a
       - name: Lint files
         uses: ./.github/workflows/lint.yml
         with:
