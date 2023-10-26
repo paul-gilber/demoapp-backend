@@ -3,12 +3,17 @@ name: Lint Files
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
-  push:
-  workflow_dispatch:
-
+  workflow_call:
+    inputs:
+      yaml:
+        description: Enable YAML lint
+        required: false
+        default: 'true'
+        type: string
 jobs:
   lint:
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    if: inputs.yaml == 'true'
     steps:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
