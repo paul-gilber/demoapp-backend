@@ -20,6 +20,11 @@ jobs:
     steps:
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
+        with:
+          # github context: https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+          args: >
+            -Dsonar.organization=${{ github.repository_owner }}
+            -Dsonar.projectKey=demoapp-backend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io/
