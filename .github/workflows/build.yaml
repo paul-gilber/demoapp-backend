@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
+      - name: List files
+        run: ls
       - name: Lint files
         uses: ./.github/workflows/lint.yaml
         with:
