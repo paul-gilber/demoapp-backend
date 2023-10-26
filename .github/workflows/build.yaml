@@ -1,3 +1,4 @@
+---
 name: Build demoapp-backend
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
