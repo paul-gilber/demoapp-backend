@@ -4,6 +4,19 @@ This project was forked from: [arjungautam1/fullstack-backend](https://github.co
 ## Dependencies
 1. MySQL database instance
 
+## Visual Studio Dev Container with Podman Desktop
+1. Install [Podman Desktop](https://podman-desktop.io/docs/installation)
+2. Install [Podman CLI](https://podman.io/docs#installing-podman)
+3. Install [Podman Compose](https://github.com/containers/podman-compose#installation)
+4. Update [Visual Studio Code User Settings](https://code.visualstudio.com/docs/getstarted/settings#_settingsjson)
+```yaml
+# settings.json
+{
+  "dev.containers.dockerComposePath": "podman-compose",    # Add this
+  "dev.containers.dockerPath": "podman"    # Add this
+}
+```
+
 ## Build Application from Visual Studio Code Dev Container
 This project uses [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) which provides consistent Development environment across user(s) or team(s).
 
