@@ -19,6 +19,6 @@ jobs:
       - name: List files
         run: ls
       - name: Lint files
-        uses: ./.github/workflows/lint.yaml
+        uses: ./.github/workflows/lint.yml
         with:
           yaml: 'true'
