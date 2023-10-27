@@ -50,9 +50,10 @@ mvn clean install -Dmaven.test.skip=true
 
 # Note: Visual Studio Dev Container creates and runs `mysql` service. To add other dependency services, update `.devcontainer/compose.yaml`
 ```
-### Build Application Container
+### Build Application Container with Multi-stage builds
+[Multi-stage](https://docs.docker.com/build/building/multi-stage/) builds are useful to anyone who has struggled to optimize Dockerfiles while keeping them easy to read and maintain.
 ```sh
-docker build -f Containerfile -t demoapp-backend .
+docker build -f Containerfile.multistage -t demoapp-backend .
 ```
 
 ## Run Application from Visual Studio Code Dev Container

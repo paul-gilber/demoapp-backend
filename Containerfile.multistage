@@ -1,3 +1,5 @@
+# Build demoapp-backend using Multi-Stage Container Build
+
 ARG BUILD_IMAGE="registry.access.redhat.com/ubi8/openjdk-17"
 ARG RUNTIME_IMAGE="registry.access.redhat.com/ubi8/openjdk-17-runtime"
 ARG MAVEN_ARGS="-Dmaven.test.skip=true"
