@@ -60,7 +60,6 @@ docker build -f Containerfile.multistage -t demoapp-backend .
 ### Run Application using Java
 ```sh
 java -jar target/demoapp-backend-0.0.1-SNAPSHOT.jar
-# Note: Application startup will fail due to the absence of mysql database
 ```
 ### Run Application using Docker Compose
 [Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. Then, with a single command, you create and start all the services from your configuration.
