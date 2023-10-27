@@ -53,8 +53,6 @@ mvn clean install -Dmaven.test.skip=true
 ### Build Application Container
 ```sh
 docker build -f Containerfile -t demoapp-backend .
-# Testing Application Container Structure using Container Structure Test https://github.com/GoogleContainerTools/container-structure-test
-container-structure-test test --image demoapp-backend --config container-structure-test.yaml
 ```
 
 ## Run Application from Visual Studio Code Dev Container
@@ -106,6 +104,14 @@ docker-compose up --build # rebuild application image
 docker-compose down # remove containers and network created by docker compose 
 ```
 
+## Testing Application Container Image with Container Structure Tests
+[Container Structure Tests](https://github.com/GoogleContainerTools/container-structure-test) provide a powerful framework to validate the structure of a container image. These tests can be used to check the output of commands in an image, as well as verify metadata and contents of the filesystem
+
+Run below command to run [test](container-structure-test.yaml) for `demoapp-backend`
+```sh
+container-structure-test test --image demoapp-backend --config container-structure-test.yaml
+```
+
 ## Changes
 1. Setup of [Visual Studio Code](https://code.visualstudio.com/) [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers). See [devcontainer.json](./.devcontainer/devcontainer.json)
 2. Removal of hardcoded credentials in [application.properties](./src/main/resources/application.properties)
@@ -113,3 +119,4 @@ docker-compose down # remove containers and network created by docker compose
 4. Creation of [Containerfile](./Containerfile)
 5. Creation of [compose.yaml](./compose.yaml)
 6. Enablement of Spring Boot Actuator in [pom.xml](./pom.xml)
+7. [Container Structure Test](#testing-application-container-image-with-container-structure-tests)
