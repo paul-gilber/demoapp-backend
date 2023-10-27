@@ -15,6 +15,9 @@
 	<description>Backend application </description>
 	<properties>
 		<java.version>17</java.version>
+		<!-- Dockerfile Build Plugin: https://github.com/spotify/dockerfile-maven -->
+		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+		<docker.registry.url></docker.registry.url>
 	</properties>
 	<dependencies>
 		<!-- Added by Paul Gilber (Start) -->
@@ -51,7 +54,42 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- Dockerfile Build Plugin (tag: ${project.version}): https://github.com/spotify/dockerfile-maven -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>${dockerfile-maven-version}</version>
+				<executions>
+					<!-- Build Container Image -->
+					<execution>
+						<id>default</id>
+						<!-- https://github.com/spotify/dockerfile-maven/blob/master/docs/usage.md#maven-goals -->
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<!-- Create Container Image `latest` tag -->
+					<execution>
+						<id>latest-tag</id>
+						<goals>
+								<goal>tag</goal>
+						</goals>
+						<configuration>
+								<repository>${docker.registry.url}${project.artifactId}</repository>
+								<tag>latest</tag>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<dockerfile>Containerfile</dockerfile>
+					<repository>${docker.registry.url}${project.artifactId}</repository>
+					<tag>${project.version}</tag>
+					<contextDirectory>.</contextDirectory>
+					<buildArgs>
+						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

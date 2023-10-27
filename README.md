@@ -22,7 +22,7 @@ This project uses [Visual Studio Code Dev Containers](https://code.visualstudio.
 
 Visual Studio Code Dev Containers extension looks up [devcontainer.json](.devcontainer/devcontainer.json) file which defines the Container environment specification.
 
-### Build Application JAR
+### Build Application Container Image with Maven
 To ensure successful build of this project, `project.properties['java.version']` value from [pom.xml](pom.xml) must match with `features['ghcr.io/devcontainers/features/java:1'].version` from [devcontainer.json](.devcontainer/devcontainer.json)
 ```xml
 <!-- pom.xml -->
@@ -48,12 +48,14 @@ mvn clean install
 # Build and skip tests
 mvn clean install -Dmaven.test.skip=true
 
-# Note: Visual Studio Dev Container creates and runs `mysql` service. To add other dependency services, update `.devcontainer/compose.yaml`
+# Notes:
+# - Visual Studio Dev Container creates and runs `mysql` service. To add other dependency services, update `.devcontainer/compose.yaml`
+# - Maven was configured to create 2 image tags: [1] based on project.version [2] `latest` tag
 ```
-### Build Application Container with Multi-stage builds
+### Build Application Container Image with Multi-stage builds
 [Multi-stage](https://docs.docker.com/build/building/multi-stage/) builds are useful to anyone who has struggled to optimize Dockerfiles while keeping them easy to read and maintain.
 ```sh
-docker build -f Containerfile.multistage -t demoapp-backend .
+docker build -f Containerfile.multistage -t demoapp-backend:latest .
 ```
 
 ## Run Application from Visual Studio Code Dev Container

@@ -1,18 +1,19 @@
-# Build demoapp-backend using Multi-Stage Container Build
+# Build demoapp-backend using Multi-Stage Container Build: https://docs.docker.com/build/building/multi-stage/
 
 ARG BUILD_IMAGE="registry.access.redhat.com/ubi8/openjdk-17"
 ARG RUNTIME_IMAGE="registry.access.redhat.com/ubi8/openjdk-17-runtime"
-ARG MAVEN_ARGS="-Dmaven.test.skip=true"
 
 # Build
 FROM ${BUILD_IMAGE} as build
 ARG MAVEN_ARGS
+WORKDIR /build
 
 COPY src ./src
 COPY pom.xml ./pom.xml
-RUN mvn "${MAVEN_ARGS[@]}" clean package
+RUN mvn clean package -Dmaven.test.skip=true -Ddockerfile.skip
 
 # APP
 FROM ${RUNTIME_IMAGE}
-COPY --from=build /home/jboss/target/demoapp-backend*.jar demoapp-backend.jar
-CMD ["/usr/bin/java", "-jar", "demoapp-backend.jar"]
+WORKDIR /app
+COPY --from=build /build/target/demoapp-backend*.jar demoapp-backend.jar
+CMD ["/usr/bin/java", "-jar", "/app/demoapp-backend.jar"]
