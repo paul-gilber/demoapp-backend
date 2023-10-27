@@ -103,7 +103,7 @@ services:
 ```sh
 docker-compose up # builds application image when it doesn't exist
 docker-compose up --build # rebuild application image
-docker-compose down # remove containers and network created by docker compose 
+docker-compose down # remove containers, networks and volumes created by docker compose
 ```
 
 ## Testing Application Container Image with Container Structure Tests

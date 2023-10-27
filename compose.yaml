@@ -31,11 +31,11 @@ services:
     depends_on:
       mysql:
         condition: service_healthy    # healthy status is indicated by `healthcheck` keyword
-    build:
-      image: demoapp-backend:latest    # use built image
-      # Build image from Containerfile
-      # context: .
-      # dockerfile: Containerfile.multistage
+    image: demoapp-backend:latest    # use built image
+    # Build image from Containerfile
+    # build:
+    #   context: .
+    #   dockerfile: Containerfile.multistage
     environment:
       # Externalized Spring Configuration: https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-external-config.html
       SPRING_DATASOURCE_USERNAME: root
