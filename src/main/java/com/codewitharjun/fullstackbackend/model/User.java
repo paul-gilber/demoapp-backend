@@ -1,8 +1,18 @@
 package com.codewitharjun.fullstackbackend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+// Spring Boot 2.x using Java EE APIs javax.*
+// import javax.persistence.Entity;
+// import javax.persistence.GeneratedValue;
+// import javax.persistence.GenerationType;
+// import javax.persistence.Id;
+
+// Spring Boot 3 migrated all Java EE APIs javax.* to their equivalent Jakarta EE variant jakarta.* due to the transition from Oracle to the Eclipse Foundation.
+// To fix this, we should use the Jakarta Persistence (JPA) APIs under the jakarta.persistence package instead of javax.persistence.
+// Spring Boot 3 using Jakarta EE APIs jakarta.*
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+// import jakarta.persistence.GenerationType;    // Unused
+import jakarta.persistence.Id;
 
 /* Created by Arjun Gautam */
 @Entity

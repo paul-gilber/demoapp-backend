@@ -15,6 +15,8 @@
 	<description>Backend application </description>
 	<properties>
 		<java.version>17</java.version>
+		<!-- MySQL Connector: https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<mysql-connector-java-version>8.0.33</mysql-connector-java-version>
 		<!-- Dockerfile Build Plugin: https://github.com/spotify/dockerfile-maven -->
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 		<docker.registry.url></docker.registry.url>
@@ -35,10 +37,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

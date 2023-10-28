@@ -5,7 +5,7 @@ This section guides you on how this repository was setup
 ## Managing the automatic deletion of branches
 You can have head branches automatically deleted after pull requests are merged in your repository.
 
-See steps on [Managing the automatic deletion of branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches)
+See steps on [Managing the automatic deletion of branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches
 
 ## Code Analysis/Scanning
 ### Configuring repository for GitHub CodeQL
