@@ -137,6 +137,7 @@ jobs:
   scan:
     needs: build
     runs-on: ubuntu-latest
+    environment: docker-hub    # Use `docker-hub` repository environment
     steps:
       - name: Scan Image with Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
@@ -146,4 +147,8 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          scanners: 'vuln,secret,config'
+        env:
+          TRIVY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          TRIVY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
