@@ -1,6 +1,6 @@
 ---
 # Build Application and Upload Container Image to Docker Hub
-name: Build
+name: Build and Scan Image
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
@@ -25,12 +25,14 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
+# Set Workflow-level environment variables
+env:
+  PROJECT: demoapp-backend
+  VERSION: ${{ github.ref_name }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    # # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
-    # permissions:
-    #   packages: write
     environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level environment variables
     env:
@@ -72,7 +74,7 @@ jobs:
           echo "Builders: ${{ env.BUILDERS }}"
           exit 1
 
-      - name: Clone
+      - name: Checkout repository
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
 
       # Setup Java
@@ -86,7 +88,9 @@ jobs:
         id: cache
         uses: actions/cache@v3    # https://github.com/marketplace/actions/cache#using-a-combination-of-restore-and-save-actions
         with:
-          path: ~/.m2
+          path: |
+            ~/.m2
+            target/*.jar
           key: maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Set up QEMU
@@ -94,7 +98,6 @@ jobs:
         uses: docker/setup-qemu-action@v3    # https://github.com/marketplace/actions/docker-setup-qemu
 
       - name: Set up Docker Buildx
-        if: env.BUILDER == 'docker'
         uses: docker/setup-buildx-action@v3    # https://github.com/marketplace/actions/docker-setup-build
 
       - name: Login to DockerHub
@@ -105,7 +108,7 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
       # Build with Maven and Upload Container Image to Docker Hub
-      - name: Build and Push Image with Maven
+      - name: Maven Build
         if: env.BUILDER == 'maven'
         env:
           # Use localhost when `container` keyword is not defined
@@ -116,17 +119,70 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
         # Use `vars` context when using repository environment variables: https://docs.github.com/en/actions/learn-github-actions/contexts#vars-context
         run: |
-          mvn package dockerfile:build dockerfile:tag dockerfile:push \
-            -Drevision=${{ github.ref_name }} \
+          mvn package -Ddockerfile.skip=true \
+            -Drevision=${{ env.VERSION }} \
             -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/
 
-      - name: Build and Push Image with Docker
-        if: env.BUILDER == 'docker'
+      - name: Docker Build and Push
+        if: env.BUILDER == 'maven'
         uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
         with:
           context: .
           file: Containerfile
+          # build-args syntax clarification: https://github.com/docker/build-push-action/issues/557#issuecomment-1030412477
+          build-args: |
+            "JAR_FILE=${{ env.PROJECT }}-${{ env.VERSION }}.jar"
           push: true
-          tags: ${{ vars.DOCKER_REGISTRY_URL }}/demoapp-backend
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Docker Build and Push (Multi-Stage)
+        if: env.BUILDER == 'docker'
+        uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
+        with:
+          context: .
+          file: Containerfile.multistage
+          push: true
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  scan:
+    needs: build
+    runs-on: ubuntu-latest
+    # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
+    permissions:
+      security-events: write    # Allow Job to upload scan results to GitHub
+    environment: docker-hub    # Use `docker-hub` repository environment
+    env:
+      TRIVY_CACHE_DIR: /tmp/trivy/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
+
+      - name: Cache Trivy
+        id: cache
+        uses: actions/cache@v3    # https://github.com/marketplace/actions/cache#using-a-combination-of-restore-and-save-actions
+        with:
+          path: ${{ env.TRIVY_CACHE_DIR }}
+          key: trivy-${{ hashFiles('**/pom.xml', '**/Containerfile*') }}    # Trivy scan results are influenced by maven dependencies and Containerfile runtime image
+
+      - name: Scan Image with Aqua Security Trivy
+        uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
+        with:
+          image-ref: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          vuln-type: 'os,library'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          scanners: 'vuln,secret,config'
+          ignore-unfixed: true
+          exit-code: '1'
+          cache-dir: ${{ env.TRIVY_CACHE_DIR }}
+          format: sarif
+          output: 'trivy-results.sarif'
+        env:
+          TRIVY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          TRIVY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2.22.5    # https://github.com/github/codeql-action/tree/main/upload-sarif
+        with:
+          sarif_file: 'trivy-results.sarif'

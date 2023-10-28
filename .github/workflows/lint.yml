@@ -7,8 +7,10 @@ on:
   push:
     branches-ignore:
       - 'cherry-pick-*'
-    paths-ignore:
-      - '**.md'    # Ignore documentation change
+    paths:
+      - '**.yaml'
+      - '**.yml'
+      - '**.yamllint'
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 
@@ -24,7 +26,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
     steps:
-      - name: Clone
+      - name: Checkout repository
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
       - name: YAML Lint
         run: yamllint .   # yamllint is pre-installed: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md#tools

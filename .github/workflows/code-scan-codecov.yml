@@ -11,7 +11,7 @@ on:
       - 'cherry-pick-*'
     paths-ignore:
       - '**.md'    # Ignore documentation changes
-      - '.github/dependabot.yml'    # Ignore dependabot changes
+      - '.github/**'    # Ignore workflow changes
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 
