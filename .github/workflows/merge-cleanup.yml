@@ -51,9 +51,9 @@ jobs:
           chmod 755 regctl
       - name: regctl login
         run: |
-          regctl registry login ${{ vars.DOCKER_REGISTRY_URL }} \
+          ./regctl registry login ${{ vars.DOCKER_REGISTRY_URL }} \
             --user ${{ secrets.DOCKER_REGISTRY_USERNAME }} \
             --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} \
       - name: regctl Delete Image Tag
         run: |
-          regctl tag delete ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          ./regctl tag delete ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
