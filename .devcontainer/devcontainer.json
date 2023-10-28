@@ -38,7 +38,9 @@
 			"gojqVersion": "latest"
 		},
 		// Install yamllint: https://github.com/devcontainers-contrib/features/tree/main/src/yamllint
-		"ghcr.io/devcontainers-contrib/features/yamllint:2": {}
+		"ghcr.io/devcontainers-contrib/features/yamllint:2": {},
+		// Install skopeo: https://github.com/jsburckhardt/devcontainer-features
+		"ghcr.io/jsburckhardt/devcontainer-features/skopeo:1": {}
 	},
 
 	// Use this environment variable if you need to bind mount your local source code into a new container.
