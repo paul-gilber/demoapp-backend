@@ -143,12 +143,17 @@ jobs:
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
         with:
           image-ref: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ github.ref_name }}
-          format: table
-          exit-code: '1'
-          ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'LOW,MEDIUM,HIGH,CRITICAL'
           scanners: 'vuln,secret,config'
+          ignore-unfixed: true
+          exit-code: '1'
+          format: sarif
+          output: 'trivy-results.sarif'
         env:
           TRIVY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           TRIVY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2.22.5    # https://github.com/github/codeql-action/tree/main/upload-sarif
+        with:
+          sarif_file: 'trivy-results.sarif'
