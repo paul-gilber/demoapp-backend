@@ -1,9 +1,8 @@
 name: Merge Cleanup
 
 on:
-  push:
   pull_request:
-    types: [ opened, closed ]
+    types: [ opened, reopened, closed ]
 
 permissions:
   contents: read
