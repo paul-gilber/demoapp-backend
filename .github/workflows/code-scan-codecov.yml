@@ -17,7 +17,7 @@ on:
 
 # Run a single job at a time: https://docs.github.com/en/actions/using-jobs/using-concurrency
 concurrency:
-  group: ${{ github.ref }}
+  group: codecov-${{ github.ref }}
   cancel-in-progress: true
 
 # Set Workflow-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
