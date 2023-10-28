@@ -3,12 +3,16 @@ name: Build demoapp-backend
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
+  # Run workflow on push except for ignored branches and paths
   push:
-    branches:
-      - main
-      - release/.*
+    # Secrets aren't available for dependabot on push. https://docs.github.com/en/enterprise-cloud@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#error-403-resource-not-accessible-by-integration-when-using-dependabot
+    branches-ignore:
+      - 'dependabot/**'
+      - 'cherry-pick-*'
     paths-ignore:
       - '**.md'
+      - '.github/dependabot.yml'
+  # Allow user to manually trigger Workflow execution
   workflow_dispatch:
 jobs:
   lint:
