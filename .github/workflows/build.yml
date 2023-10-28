@@ -61,12 +61,6 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
 
-      # Setup Java
-      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
-        with:
-          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
-          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
-
       # Cache Maven dependencies
       - name: Install and Cache Maven dependencies
         id: cache
@@ -74,6 +68,12 @@ jobs:
         with:
           path: ~/.m2
           key: maven-${{ hashFiles('**/pom.xml') }}
+
+      # Setup Java
+      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
+        with:
+          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
+          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3    # https://github.com/marketplace/actions/docker-setup-qemu
@@ -98,13 +98,9 @@ jobs:
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
           DOCKER_REGISTRY_URL: "${{ vars.DOCKER_REGISTRY_URL }}/"    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
-          DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
         run: |
           mvn package dockerfile:build dockerfile:tag dockerfile:push \
-            -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }} \
-            -DDOCKER_REGISTRY_USERNAME=${{ env.DOCKER_REGISTRY_USERNAME }} \
-            -DDOCKER_REGISTRY_PASSWORD=${{ env.DOCKER_REGISTRY_PASSWORD }}
+            -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }}
 
       # Uncomment lines below to build with Docker
       # - name: Build container image
