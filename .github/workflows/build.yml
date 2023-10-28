@@ -75,9 +75,9 @@ jobs:
           path: ~/.m2
           key: maven-${{ hashFiles('**/pom.xml') }}
 
+      # Uncomment lines below when building with Docker
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v3    # https://github.com/marketplace/actions/docker-setup-qemu
-
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v3    # https://github.com/marketplace/actions/docker-setup-build
 
@@ -100,6 +100,7 @@ jobs:
         # Use `vars` context when using repository environment variables: https://docs.github.com/en/actions/learn-github-actions/contexts#vars-context
         run: |
           mvn package dockerfile:build dockerfile:tag dockerfile:push \
+            -Drevision=${{ github.ref_name }} \
             -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/
 
       # Uncomment lines below to build with Docker
