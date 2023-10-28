@@ -88,7 +88,9 @@ jobs:
         id: cache
         uses: actions/cache@v3    # https://github.com/marketplace/actions/cache#using-a-combination-of-restore-and-save-actions
         with:
-          path: ~/.m2
+          path: |
+            ~/.m2
+            target/*.jar
           key: maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Set up QEMU
