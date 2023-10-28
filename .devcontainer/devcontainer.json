@@ -39,8 +39,6 @@
 		},
 		// Install yamllint: https://github.com/devcontainers-contrib/features/tree/main/src/yamllint
 		"ghcr.io/devcontainers-contrib/features/yamllint:2": {},
-		// Install trivy: https://github.com/devcontainers-contrib/features/tree/main/src/trivy
-		"ghcr.io/devcontainers-contrib/features/trivy:1": {},
 		// Install skopeo: https://github.com/jsburckhardt/devcontainer-features
 		"ghcr.io/jsburckhardt/devcontainer-features/skopeo:1": {}
 	},

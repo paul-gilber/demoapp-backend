@@ -16,6 +16,9 @@ brew install podman
 # No available feature for installing Podman Compose: https://github.com/containers/podman-compose
 pip3 install podman-compose
 
+# No available feature for installing Aqua Security Trivy: https://github.com/aquasecurity/trivy
+brew install trivy
+
 # No available feature for installing regclient: https://github.com/regclient/regclient
 curl -L https://github.com/regclient/regclient/releases/latest/download/regctl-linux-amd64 > ${HOME}/.local/bin/regctl
 chmod 755 ${HOME}/.local/bin/regctl
