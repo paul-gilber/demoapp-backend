@@ -160,7 +160,7 @@ jobs:
         uses: actions/cache@v3    # https://github.com/marketplace/actions/cache#using-a-combination-of-restore-and-save-actions
         with:
           path: ${{ env.TRIVY_CACHE_DIR }}
-          key: trivy-${{ hashFiles('**/pom.xml', '**/Containerfile*') }}    # Trivy scan results are influenced by maven dependencies and Containerfile runtime image
+          key: trivy-${{ hashFiles('**/pom.xml', '**/Containerfile.*') }}    # Trivy scan results are influenced by maven dependencies and Containerfile runtime image
       - name: Scan Image with Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
         with:
