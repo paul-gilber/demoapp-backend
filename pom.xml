@@ -76,7 +76,7 @@
 					</execution>
 					<!-- Create Container Image `latest` tag -->
 					<execution>
-						<id>latest-tag</id>
+						<id>latest</id>
 						<goals>
 								<goal>tag</goal>
 								<goal>push</goal>

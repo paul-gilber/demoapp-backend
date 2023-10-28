@@ -103,6 +103,8 @@ jobs:
         run: |
           mvn package dockerfile:build dockerfile:tag dockerfile:push \
             -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }}
+          mvn -DexecutionId=latest dockerfile:tag dockerfile:push \
+            -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }}
 
       # Uncomment lines below to build with Docker
       # - name: Build container image
