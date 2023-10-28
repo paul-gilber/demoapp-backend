@@ -46,7 +46,7 @@ jobs:
         with:
           distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
           java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
-          cache: maven-${{ hashFiles('**/pom.xml') }}
+          cache: maven
 
       # Build with Maven and Upload Container Image to Docker Hub
       # Docker Hub repositor: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
