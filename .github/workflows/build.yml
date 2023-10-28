@@ -28,9 +28,12 @@ jobs:
       packages: write
     container:
       image: registry.access.redhat.com/ubi8/openjdk-17    # Use same build image as Containerfile.multistage
-      options: --user 185    # Get value from docker inspect {{ image }} | jq .[].Config.User
-      # volumes:
-      #   - github_runner_temp:/__w/    # Error: EACCES: permission denied, open '/__w/_temp/_runner_file_commands/save_state_19d2adac-52a7-4c94-b746-de81d0e83853'
+      # Set credentials when container registry requires authentication to pull the image
+      # credentials:
+      #   username: ${{ github.actor }}
+      #   password: ${{ secrets.github_token }}
+      # Run as `root(0)` user, workaround for Error: EACCES: permission denied, open '/__w/_temp/**'
+      options: --user 0    # Run as root or Get user from docker inspect {{ image }} | jq .[].Config.User
     services:
       mysql:
         image: mysql:8.0    # Use same mysql image from devcontainer.json
