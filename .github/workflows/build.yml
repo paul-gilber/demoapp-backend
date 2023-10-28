@@ -27,6 +27,12 @@ jobs:
     permissions:
       packages: write
     environment: docker-hub    # Use `docker-hub` repository environment
+    # Set Job-level environment variables
+    env:
+      MYSQL_DATABASE: demoapp
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: local
     # Uncomment lines below to run `build` job on container
     # Note: container image must contains commands required for step execution, e.g. docker, gzip, etc.
     # container:
@@ -39,10 +45,10 @@ jobs:
       mysql:
         image: mysql:8.0    # Use same mysql image from devcontainer.json
         env:
-          MYSQL_DATABASE: demoapp
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: local
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
         # Ports are required only when `container` keyword is not defined
         ports:
           - 3306:3306    # Opens tcp port 3306 on the host and service container
@@ -74,18 +80,18 @@ jobs:
         uses: docker/login-action@v3    # https://github.com/marketplace/actions/docker-login
         with:
           registry: ${{ vars.DOCKER_REGISTRY_URL }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
       # Build with Maven and Upload Container Image to Docker Hub
       - name: Build
         env:
           # Use localhost when `container` keyword is not defined
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/demoapp
-          # Use service name when `container` keyword is defined 
+          # Use service name when `container` keyword is defined
           # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demoapp
           SPRING_DATASOURCE_USERNAME: root
-          SPRING_DATASOURCE_PASSWORD: local
+          SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
           DOCKER_REGISTRY_URL: ${{ vars.DOCKER_REGISTRY_URL }}    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
           DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
