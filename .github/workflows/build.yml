@@ -33,6 +33,9 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
+    permissions:
+      packages: write    # Allow Docker action to create packages
     environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level environment variables
     env:
@@ -121,7 +124,7 @@ jobs:
             -Drevision=${{ env.VERSION }} \
             -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/
 
-      - name: Build and Push Image with Docker
+      - name: Docker Build and Push
         if: env.BUILDER == 'maven'
         uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
         with:
@@ -135,7 +138,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and Push Image with Docker (Multi-Stage)
+      - name: Docker Build and Push (Multi-Stage)
         if: env.BUILDER == 'docker'
         uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
         with:
@@ -148,10 +151,10 @@ jobs:
   scan:
     needs: build
     runs-on: ubuntu-latest
-    environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
     permissions:
       security-events: write    # Allow Job to upload scan results to GitHub
+    environment: docker-hub    # Use `docker-hub` repository environment
     steps:
       - name: Scan Image with Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
