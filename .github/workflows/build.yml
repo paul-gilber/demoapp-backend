@@ -28,6 +28,7 @@ concurrency:
 # Set Workflow-level environment variables
 env:
   PROJECT: demoapp-backend
+  VERSION: ${{ github.ref_name }}
 
 jobs:
   build:
@@ -109,7 +110,7 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
       # Build with Maven and Upload Container Image to Docker Hub
-      - name: Build and Push Image with Maven
+      - name: Maven Build
         if: env.BUILDER == 'maven'
         env:
           # Use localhost when `container` keyword is not defined
@@ -120,18 +121,31 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
         # Use `vars` context when using repository environment variables: https://docs.github.com/en/actions/learn-github-actions/contexts#vars-context
         run: |
-          mvn package dockerfile:build dockerfile:tag dockerfile:push \
-            -Drevision=${{ github.ref_name }} \
+          mvn package -Ddockerfile.skip=true \
+            -Drevision=${{ env.VERSION }} \
             -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/
 
       - name: Build and Push Image with Docker
-        if: env.BUILDER == 'docker'
+        if: env.BUILDER == 'maven'
         uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
         with:
           context: .
           file: Containerfile
+          build-args:
+            - "JAR_FILE=${{ env.PROJECT }}-${{ env.VERSION }}.jar"
           push: true
-          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ env.PROJECT }}
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push Image with Docker (Multi-Stage)
+        if: env.BUILDER == 'docker'
+        uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
+        with:
+          context: .
+          file: Containerfile.multistage
+          push: true
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ env.PROJECT }}:${{ env.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
   scan:
@@ -142,7 +156,7 @@ jobs:
       - name: Scan Image with Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
         with:
-          image-ref: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ github.ref_name }}
+          image-ref: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
           vuln-type: 'os,library'
           severity: 'LOW,MEDIUM,HIGH,CRITICAL'
           scanners: 'vuln,secret,config'
