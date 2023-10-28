@@ -3,14 +3,15 @@ name: CodeQL Scan
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
-  # Run workflow on push except for ignored branches
+  # Run workflow on push except for ignored branches and paths
   push:
     # Secrets aren't available for dependabot on push. https://docs.github.com/en/enterprise-cloud@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#error-403-resource-not-accessible-by-integration-when-using-dependabot
     branches-ignore:
       - 'dependabot/**'
       - 'cherry-pick-*'
     paths-ignore:
-      - '.github/dependabot.yml'
+      - '**.md'    # Ignore documentation changes
+      - '.github/dependabot.yml'    # Ignore dependabot changes
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 

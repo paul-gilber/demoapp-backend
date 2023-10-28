@@ -10,8 +10,8 @@ on:
       - 'dependabot/**'
       - 'cherry-pick-*'
     paths-ignore:
-      - '**.md'
-      - '.github/dependabot.yml'
+      - '**.md'    # Ignore documentation changes
+      - '.github/dependabot.yml'    # Ignore dependabot changes
   # Allow user to manually trigger Workflow execution
   workflow_dispatch:
 jobs:
