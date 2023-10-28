@@ -27,12 +27,14 @@ jobs:
     permissions:
       packages: write
     environment: docker-hub    # Use `docker-hub` repository environment
-    container:
-      image: mcr.microsoft.com/openjdk/jdk:17-ubuntu    # Image Java version must match with `project.version` in pom.xml
-      # Set credentials when container registry requires authentication to pull the image
-      # credentials:
-      #   username: ${{ github.actor }}
-      #   password: ${{ secrets.github_token }}
+    # Uncomment lines below to run `build` job on container
+    # Note: container image must contains commands required for step execution, e.g. docker, gzip, etc.
+    # container:
+    #   image: mcr.microsoft.com/openjdk/jdk:17-ubuntu    # Image Java version must match with `project.version` in pom.xml
+    #   # Set credentials when container registry requires authentication to pull the image
+    #   # credentials:
+    #   #   username: ${{ github.actor }}
+    #   #   password: ${{ secrets.github_token }}
     services:
       mysql:
         image: mysql:8.0    # Use same mysql image from devcontainer.json
@@ -48,12 +50,11 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
 
-      # Uncomment line below when `container` keyword is not defined
-      # # Setup Java
-      # - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
-      #   with:
-      #     distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
-      #     java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
+      # Setup Java
+      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
+        with:
+          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
+          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
 
       # Cache Maven dependencies
       - name: Install and Cache Maven dependencies
@@ -72,18 +73,20 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3    # https://github.com/marketplace/actions/docker-login
         with:
-          registry: paulgilber/
+          registry: ${{ vars.DOCKER_REGISTRY_URL }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build with Maven and Upload Container Image to Docker Hub
       - name: Build
         env:
-          # SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/demoapp    # Use service name when `container` keyword is defined
-          SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demoapp
+          # Use localhost when `container` keyword is not defined
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/demoapp
+          # Use service name when `container` keyword is defined 
+          # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demoapp
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: local
-          DOCKER_REGISTRY_URL: paulgilber/    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
+          DOCKER_REGISTRY_URL: ${{ vars.DOCKER_REGISTRY_URL }}    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
           DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
         run: |
@@ -99,6 +102,6 @@ jobs:
       #     context: .
       #     file: Containerfile
       #     push: true
-      #     tags: paulgilber/demoapp-backend
+      #     tags: ${{ vars.DOCKER_REGISTRY_URL }}/demoapp-backend
       #     cache-from: type=gha
       #     cache-to: type=gha,mode=max
