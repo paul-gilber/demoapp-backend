@@ -1,5 +1,6 @@
 ---
-name: Build demoapp-backend
+# Build Application and Upload Container Image to Docker Hub
+name: Build
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
@@ -20,6 +21,28 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
+
+      # Setup Java and cache Maven dependencies
+      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
+        with:
+          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
+          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
+          cache: maven
+
+      # Build with Maven and Upload Container Image to Docker Hub
+      # Docker Hub repositor: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
+      - name: Build
+        env:
+          DOCKER_REGISTRY_URL: docker.io/paulgilber/
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+        run: |
+          mvn clean package \
+            -Ddocker.registry.url= ${{ env.DOCKER_REGISTRY_URL }} \
+            -Ddocker.registry.username= ${{ env.DOCKER_REGISTRY_USERNAME }} \
+            -Ddocker.registry.password= ${{ env.DOCKER_REGISTRY_PASSWORD }}
+
+      # Uncomment lines below to build with Docker
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v3    # https://github.com/marketplace/actions/docker-setup-qemu
       # - name: Set up Docker Buildx
@@ -29,7 +52,7 @@ jobs:
       #   with:
       #     context: .
       #     file: Containerfile
-      #     push: false
-      #     tags: demoapp-backend
+      #     push: true
+      #     tags: paulgilber/demoapp-backend
       #     cache-from: type=gha
       #     cache-to: type=gha,mode=max

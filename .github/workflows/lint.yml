@@ -5,9 +5,7 @@ name: Lint Files
 on:
   # Run workflow on push except for ignored branches and paths
   push:
-    # Secrets aren't available for dependabot on push. https://docs.github.com/en/enterprise-cloud@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#error-403-resource-not-accessible-by-integration-when-using-dependabot
     branches-ignore:
-      # - 'dependabot/**'
       - 'cherry-pick-*'
     paths-ignore:
       - '**.md'    # Ignore documentation change

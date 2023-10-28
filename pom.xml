@@ -20,6 +20,8 @@
 		<!-- Dockerfile Build Plugin: https://github.com/spotify/dockerfile-maven -->
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 		<docker.registry.url></docker.registry.url>
+		<docker.registry.username></docker.registry.username>
+		<docker.registry.password></docker.registry.password>
 	</properties>
 	<dependencies>
 		<!-- Added by Paul Gilber (Start) -->
@@ -69,6 +71,7 @@
 						<!-- https://github.com/spotify/dockerfile-maven/blob/master/docs/usage.md#maven-goals -->
 						<goals>
 							<goal>build</goal>
+							<goal>push</goal>
 						</goals>
 					</execution>
 					<!-- Create Container Image `latest` tag -->
@@ -76,15 +79,17 @@
 						<id>latest-tag</id>
 						<goals>
 								<goal>tag</goal>
+								<goal>push</goal>
 						</goals>
 						<configuration>
-								<repository>${docker.registry.url}${project.artifactId}</repository>
 								<tag>latest</tag>
 						</configuration>
 					</execution>
 				</executions>
 				<configuration>
 					<dockerfile>Containerfile</dockerfile>
+					<username>${docker.registry.username}</username>
+					<password>${docker.registry.password}</password>
 					<repository>${docker.registry.url}${project.artifactId}</repository>
 					<tag>${project.version}</tag>
 					<contextDirectory>.</contextDirectory>
