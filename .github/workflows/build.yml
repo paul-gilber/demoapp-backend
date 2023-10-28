@@ -1,6 +1,6 @@
 ---
 # Build Application and Upload Container Image to Docker Hub
-name: Build
+name: Build and Scan Image
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
@@ -24,6 +24,10 @@ permissions:
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
+
+# Set Workflow-level environment variables
+env:
+  PROJECT: demoapp-backend
 
 jobs:
   build:
@@ -127,6 +131,19 @@ jobs:
           context: .
           file: Containerfile
           push: true
-          tags: ${{ vars.DOCKER_REGISTRY_URL }}/demoapp-backend
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ env.PROJECT }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  scan:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scan Image with Aqua Security Trivy
+        uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
+        with:
+          image-ref: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ github.ref_name }}
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

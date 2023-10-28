@@ -7,8 +7,10 @@ on:
   push:
     branches-ignore:
       - 'cherry-pick-*'
-    paths-ignore:
-      - '**.md'    # Ignore documentation change
+    paths:
+      - '**.yaml'
+      - '**.yml'
+      - '**.yamllint'
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 
