@@ -18,6 +18,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0    # Use same mysql image from devcontainer.json
+        env:
+          MYSQL_DATABASE: demoapp
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: local
+        # Ports are required only when `container` keyword is not defined
+        ports:
+          - 3306:3306    # Opens tcp port 3306 on the host and service container
     steps:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
@@ -33,6 +44,9 @@ jobs:
       # Docker Hub repositor: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
       - name: Build
         env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/demoapp    # Use service name when `container` keyword is defined
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: local
           DOCKER_REGISTRY_URL: docker.io/paulgilber/
           DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
