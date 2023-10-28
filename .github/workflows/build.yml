@@ -26,14 +26,13 @@ jobs:
     # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
     permissions:
       packages: write
+    environment: docker-hub    # Use `docker-hub` repository environment
     container:
-      image: registry.access.redhat.com/ubi8/openjdk-17    # Use same build image as Containerfile.multistage
+      image: mcr.microsoft.com/openjdk/jdk:17-ubuntu    # Image Java version must match with `project.version` in pom.xml
       # Set credentials when container registry requires authentication to pull the image
       # credentials:
       #   username: ${{ github.actor }}
       #   password: ${{ secrets.github_token }}
-      # Run as `root(0)` user, workaround for Error: EACCES: permission denied, open '/__w/_temp/**'
-      options: --user 0    # Run as root or Get user from docker inspect {{ image }} | jq .[].Config.User
     services:
       mysql:
         image: mysql:8.0    # Use same mysql image from devcontainer.json
