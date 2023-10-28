@@ -4,11 +4,11 @@ name: Merge Cleanup
 on:
   # Run Workflow upon pull request
   pull_request:
-    types: [opened, reopened, closed]
+    types: [closed]
 
   # Run Workflow upon pull request to specified target branch(es)
   # pull_request_target:
-  #   types: [opened, reopened, closed]
+  #   types: [closed]
   #   branches:
   #     - main
 
