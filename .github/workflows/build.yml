@@ -15,9 +15,17 @@ on:
       - '.github/dependabot.yml'    # Ignore dependabot changes
   # Allow user to manually trigger Workflow execution
   workflow_dispatch:
+
+# Set Workflow-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
+    permissions:
+      packages: write    # Allow `build` job to create packages (push docker image)
     services:
       mysql:
         image: mysql:8.0    # Use same mysql image from devcontainer.json
