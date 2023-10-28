@@ -17,8 +17,8 @@ on:
   workflow_dispatch:
 
 # Set Workflow-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-permissions:
-  contents: read
+permissions: write-all
+  # contents: read
 
 # Run a single job at a time: https://docs.github.com/en/actions/using-jobs/using-concurrency
 concurrency:
@@ -28,9 +28,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
-    permissions:
-      packages: write
+    # # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
+    # permissions:
+    #   packages: write
     environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level environment variables
     env:
