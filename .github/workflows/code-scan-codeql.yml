@@ -58,16 +58,14 @@ jobs:
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
-      - name: Autobuild
-        continue-on-error: true
-        id: autobuild
-        uses: github/codeql-action/autobuild@v2.22.5
+      # - name: Autobuild
+      #   id: autobuild
+      #   uses: github/codeql-action/autobuild@v2.22.5
 
       # Note: If the Autobuild fails above, remove it and uncomment the following three lines
       #    and modify them (or add more) to build your code if your project
       #    uses a compiled language
       - name: Build
-        if: failure() && steps.autobuild.outcome == 'failure'
         run: |
           mvn clean package -Dmaven.test.skip=true -Ddockerfile.skip
 
