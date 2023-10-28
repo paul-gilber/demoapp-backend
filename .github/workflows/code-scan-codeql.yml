@@ -36,6 +36,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
 
+      # Setup Java and cache Maven dependencies
+      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
+        with:
+          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
+          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
+
       # Cache Maven dependencies
       - name: Install and Cache Maven dependencies
         id: cache
@@ -43,13 +49,6 @@ jobs:
         with:
           path: ~/.m2
           key: maven-${{ hashFiles('**/pom.xml') }}
-
-      # Setup Java and cache Maven dependencies
-      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
-        with:
-          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
-          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
-          cache: maven
 
       # Initializes CodeQL scanning tools
       # https://github.com/github/codeql-action

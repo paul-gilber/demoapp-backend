@@ -33,6 +33,12 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
 
+      # Setup Java
+      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
+        with:
+          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
+          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
+
       # Cache Maven dependencies
       - name: Install and Cache Maven dependencies
         id: cache
@@ -40,13 +46,6 @@ jobs:
         with:
           path: ~/.m2
           key: maven-${{ hashFiles('**/pom.xml') }}
-
-      # Setup Java
-      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
-        with:
-          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
-          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
-          cache: maven
 
       # Build with Maven and Upload Container Image to Docker Hub
       - name: Build
@@ -58,6 +57,7 @@ jobs:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
         run: |
+          mvn package
           mvn deploy \
             -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }} \
             -DDOCKER_REGISTRY_USERNAME=${{ env.DOCKER_REGISTRY_USERNAME }} \
