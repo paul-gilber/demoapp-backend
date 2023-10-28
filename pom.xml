@@ -100,4 +100,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+			<repository>
+				<id>docker</id>
+				<name>Docker Registry</name>
+				<url>${docker.registry.url}${project.artifactId}</url>
+			</repository>
+	</distributionManagement>
 </project>
