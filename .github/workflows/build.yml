@@ -33,9 +33,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
-    permissions:
-      packages: write    # Allow Docker action to create packages
     environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level environment variables
     env:
@@ -134,7 +131,7 @@ jobs:
           build-args: |
             "JAR_FILE=${{ env.PROJECT }}-${{ env.VERSION }}.jar"
           push: true
-          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -145,7 +142,7 @@ jobs:
           context: .
           file: Containerfile.multistage
           push: true
-          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          tags: ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
   scan:
