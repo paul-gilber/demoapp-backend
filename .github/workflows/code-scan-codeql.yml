@@ -1,4 +1,5 @@
 ---
+# Workflow syntax for GitHub Actions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 # See CodeQL results at https://github.com/paul-gilber/demoapp-backend/security/code-scanning/tools/CodeQL/status/
 name: Scan Code with CodeQL
 
