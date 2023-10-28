@@ -1,5 +1,6 @@
 ---
-name: CodeQL Scan
+# See CodeQL results at https://github.com/paul-gilber/demoapp-backend/security/code-scanning/tools/CodeQL/status/
+name: Scan Code with CodeQL
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
