@@ -152,7 +152,15 @@ jobs:
     permissions:
       security-events: write    # Allow Job to upload scan results to GitHub
     environment: docker-hub    # Use `docker-hub` repository environment
+    env:
+      TRIVY_CACHE_DIR: /tmp/trivy/
     steps:
+      - name: Cache Trivy
+        id: cache
+        uses: actions/cache@v3    # https://github.com/marketplace/actions/cache#using-a-combination-of-restore-and-save-actions
+        with:
+          path: ${{ env.TRIVY_CACHE_DIR }}
+          key: trivy-${{ hashFiles('**/pom.xml', '**/Containerfile*') }}
       - name: Scan Image with Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
         with:
@@ -162,6 +170,7 @@ jobs:
           scanners: 'vuln,secret,config'
           ignore-unfixed: true
           exit-code: '1'
+          cache-dir: ${{ env.TRIVY_CACHE_DIR }}
           format: sarif
           output: 'trivy-results.sarif'
         env:
