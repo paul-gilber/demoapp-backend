@@ -97,10 +97,11 @@ jobs:
           # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demoapp
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
-          DOCKER_REGISTRY_URL: "${{ vars.DOCKER_REGISTRY_URL }}/"    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
         run: |
           mvn package dockerfile:build dockerfile:tag dockerfile:push \
-            -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }}
+            -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/ \
+            -DDOCKER_REGISTRY_USERNAME=${{ secrets.DOCKER_REGISTRY_USERNAME }} \
+            -DDOCKER_REGISTRY_PASSWORD=${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
       # Uncomment lines below to build with Docker
       # - name: Build container image
