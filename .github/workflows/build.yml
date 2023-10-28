@@ -84,7 +84,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3    # https://github.com/marketplace/actions/docker-login
         with:
-          # registry: ${{ vars.DOCKER_REGISTRY_URL }}
+          registry: ${{ vars.DOCKER_REGISTRY_URL }}
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
@@ -97,18 +97,10 @@ jobs:
           # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demoapp
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
-          DOCKER_REGISTRY_URL: ${{ vars.DOCKER_REGISTRY_URL }}    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
-          DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+        # Use `vars` context when using repository environment variables: https://docs.github.com/en/actions/learn-github-actions/contexts#vars-context
         run: |
           mvn package dockerfile:build dockerfile:tag dockerfile:push \
-            -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }}
-      # Push via `mvn dockerfile:push` fails with error: unauthorized: access token has insufficient scopes
-      # run: |
-      #   mvn package dockerfile:build dockerfile:tag dockerfile:push \
-      #     -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }} \
-      #     -DDOCKER_REGISTRY_USERNAME=${{ env.DOCKER_REGISTRY_USERNAME }} \
-      #     -DDOCKER_REGISTRY_PASSWORD=${{ env.DOCKER_REGISTRY_PASSWORD }}
+            -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/
 
       # Uncomment lines below to build with Docker
       # - name: Build container image
@@ -120,6 +112,3 @@ jobs:
       #     tags: ${{ vars.DOCKER_REGISTRY_URL }}/demoapp-backend
       #     cache-from: type=gha
       #     cache-to: type=gha,mode=max
-
-      # # Push Docker Image
-      # - name: Push Docker Image to ${{ vars.DOCKER_REGISTRY_URL }}
