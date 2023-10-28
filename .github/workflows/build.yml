@@ -41,6 +41,7 @@ jobs:
       # Select builder from: ["docker", "maven"]
       # "docker" uses multi-stage build
       # "maven" uses dockerfile-maven-plugin
+      BUILDERS: '["docker", "maven"]'
       BUILDER: maven
     # Uncomment lines below to run `build` job on container
     # Note: container image must contains commands required for step execution, e.g. docker, gzip, etc.
@@ -64,10 +65,11 @@ jobs:
     steps:
       # Fail job when invalid builder is selected
       - name: Check BUILDER environment variable
-        if: ${{! contains(fromJSON('["docker", "maven"]'), env.BUILDER) }}
+        # if expression clarification: https://github.com/github/docs/blob/main/data/reusables/actions/expression-syntax-if.md
+        if: ${{! contains(fromJSON(env.BUILDERS), env.BUILDER) }}
         run: |
           echo "Invalid builder: ${{ env.BUILDER }}"
-          echo 'Builders: ["docker", "maven"]'
+          echo "Builders: ${{ env.BUILDERS }}"
           exit 1
 
       - name: Clone
