@@ -1,0 +1,32 @@
+name: Merge Cleanup
+
+on:
+  push:
+  pull_request:
+    types: [ opened, closed ]
+
+permissions:
+  contents: read
+
+# Set Workflow-level environment variables
+env:
+  PROJECT: demoapp-backend
+  VERSION: ${{ github.ref_name }}
+
+jobs:
+  docker-hub:
+    runs-on: ubuntu-latest
+    environment: docker-hub
+    steps:
+      - name: Output Information
+        run: |
+          echo ${{ toJson(github) }}
+      # Skopeo is pre-installed in GitHub hosted runners: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md#tools
+      - name: Skopeo Login
+        run: |
+          skopeo login ${{ vars.DOCKER_REGISTRY_URL }} \
+            --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} \
+            --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} \
+      # - name: Skopeo Delete Image
+      #   run: |
+      #     skopeo delete docker://${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
