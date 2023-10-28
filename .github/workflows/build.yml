@@ -58,7 +58,7 @@ jobs:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
         run: |
-          mvn clean package \
+          mvn deploy \
             -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }} \
             -DDOCKER_REGISTRY_USERNAME=${{ env.DOCKER_REGISTRY_USERNAME }} \
             -DDOCKER_REGISTRY_PASSWORD=${{ env.DOCKER_REGISTRY_PASSWORD }}
