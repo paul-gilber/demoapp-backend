@@ -22,6 +22,11 @@ See [steps](https://docs.sonarcloud.io/getting-started/github/)
 
 See [scan results](https://sonarcloud.io/projects)
 
+### Integrating repository with CodeCov
+[Codecov](https://about.codecov.io/) is the all-in-one code coverage reporting solution for any test suite — giving developers actionable insights to deploy reliable code with confidence. Trusted by over 29,000 organizations.
+
+[GitHub Integration](https://about.codecov.io/tool/github/)
+
 ### Configuring repository for GitHub CodeQL
 [CodeQL](https://codeql.github.com/docs/codeql-overview/about-codeql/) is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis.
 
