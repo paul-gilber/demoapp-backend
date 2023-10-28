@@ -15,6 +15,13 @@ See [steps](https://docs.github.com/en/code-security/dependabot/dependabot-secur
 See [configuration](../../.github/dependabot.yml)
 
 ## Code Analysis/Scanning
+### Integrating repository with SonarCloud
+[SonarCloud](https://docs.sonarcloud.io/) is a cloud-based code analysis service designed to detect coding issues in 26 different programming languages. By integrating directly with your CI pipeline or one of our supported DevOps platforms, your code is checked against an extensive set of rules that cover many attributes of code, such as maintainability, reliability, and security issues on each merge/pull request.
+
+See [steps](https://docs.sonarcloud.io/getting-started/github/)
+
+See [scan results](https://sonarcloud.io/projects)
+
 ### Configuring repository for GitHub CodeQL
 [CodeQL](https://codeql.github.com/docs/codeql-overview/about-codeql/) is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis.
 
