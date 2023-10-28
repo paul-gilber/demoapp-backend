@@ -38,9 +38,9 @@ jobs:
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
         run: |
           mvn clean package \
-            -Ddocker.registry.url= ${{ env.DOCKER_REGISTRY_URL }} \
-            -Ddocker.registry.username= ${{ env.DOCKER_REGISTRY_USERNAME }} \
-            -Ddocker.registry.password= ${{ env.DOCKER_REGISTRY_PASSWORD }}
+            -DDOCKER_REGISTRY_URL=${{ env.DOCKER_REGISTRY_URL }} \
+            -DDOCKER_REGISTRY_USERNAME=${{ env.DOCKER_REGISTRY_USERNAME }} \
+            -DDOCKER_REGISTRY_PASSWORD=${{ env.DOCKER_REGISTRY_PASSWORD }}
 
       # Uncomment lines below to build with Docker
       # - name: Set up QEMU

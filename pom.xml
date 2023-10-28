@@ -19,9 +19,9 @@
 		<mysql-connector-java-version>8.0.33</mysql-connector-java-version>
 		<!-- Dockerfile Build Plugin: https://github.com/spotify/dockerfile-maven -->
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
-		<docker.registry.url></docker.registry.url>
-		<docker.registry.username></docker.registry.username>
-		<docker.registry.password></docker.registry.password>
+		<docker.registry.url>${DOCKER_REGISTRY_URL}</docker.registry.url>    <!-- Command Line Arguments as Maven Properties: https://www.baeldung.com/maven-arguments -->
+		<docker.registry.username>${DOCKER_REGISTRY_USERNAME}</docker.registry.username>    <!-- Command Line Arguments as Maven Properties: https://www.baeldung.com/maven-arguments -->
+		<docker.registry.password>${DOCKER_REGISTRY_PASSWORD}</docker.registry.password>    <!-- Command Line Arguments as Maven Properties: https://www.baeldung.com/maven-arguments -->
 	</properties>
 	<dependencies>
 		<!-- Added by Paul Gilber (Start) -->
