@@ -3,13 +3,20 @@ name: Lint Files
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
+  # Run workflow on push except for ignored branches and paths
+  push:
+    # Secrets aren't available for dependabot on push. https://docs.github.com/en/enterprise-cloud@latest/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/troubleshooting-the-codeql-workflow#error-403-resource-not-accessible-by-integration-when-using-dependabot
+    branches-ignore:
+      # - 'dependabot/**'
+      - 'cherry-pick-*'
+    paths-ignore:
+      - '**.md'    # Ignore documentation change
+  # Run workflow on pull request
+  pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
+
+  # Allow other Workflows to call this Workflow
   workflow_call:
-    inputs:
-      yaml:
-        description: Enable YAML lint
-        required: false
-        default: true
-        type: boolean
+
 jobs:
   lint:
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
@@ -17,5 +24,4 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
       - name: YAML Lint
-        if: inputs.yaml
         run: yamllint .   # yamllint is pre-installed: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md#tools
