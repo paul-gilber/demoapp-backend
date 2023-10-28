@@ -152,7 +152,7 @@ jobs:
     environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
     permissions:
-      security_events: write    # Allow Job to upload scan results to GitHub
+      security-events: write    # Allow Job to upload scan results to GitHub
     steps:
       - name: Scan Image with Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.13.0    # https://github.com/marketplace/actions/aqua-security-trivy
