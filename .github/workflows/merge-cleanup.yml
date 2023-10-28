@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Output Information
         run: |
-          echo ${{ toJson(github) }}
+          echo "${{ toJson(github) }}"
       # Skopeo is pre-installed in GitHub hosted runners: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md#tools
       - name: Skopeo Login
         run: |
