@@ -11,22 +11,43 @@ permissions:
 # Set Workflow-level environment variables
 env:
   PROJECT: demoapp-backend
-  VERSION: ${{ github.head_ref }}
+  VERSION: ${{ github.head_ref }}    # Set source branch as version
 
 jobs:
-  docker-hub:
+  # Skopeo deletes image tag by reference which is not allowed by Docker Hub
+  # docker-hub-skopeo:
+  #   runs-on: ubuntu-latest
+  #   environment: docker-hub
+  #   steps:
+  #     - name: Output Information
+  #       run: |
+  #         echo "${{ toJson(github) }}"
+  #     # Skopeo is pre-installed in GitHub hosted runners: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md#tools
+  #     - name: Skopeo Login
+  #       run: |
+  #         skopeo login ${{ vars.DOCKER_REGISTRY_URL }} \
+  #           --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} \
+  #           --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} \
+  #     - name: Skopeo Delete Image
+  #       id: skopeo-delete
+  #       run: |
+  #         skopeo delete docker://${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
+
+  # Regctl allows image tag deletion which is allowed by Docker Hub
+  docker-hub-regctl:
     runs-on: ubuntu-latest
     environment: docker-hub
     steps:
-      - name: Output Information
+      # Install regctl: https://github.com/regclient/regclient
+      - name: Install regctl
         run: |
-          echo "${{ toJson(github) }}"
-      # Skopeo is pre-installed in GitHub hosted runners: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md#tools
-      - name: Skopeo Login
+          curl -L https://github.com/regclient/regclient/releases/latest/download/regctl-linux-amd64 > regctl
+          chmod 755 regctl
+      - name: regctl login
         run: |
-          skopeo login ${{ vars.DOCKER_REGISTRY_URL }} \
-            --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} \
+          regctl registry login ${{ vars.DOCKER_REGISTRY_URL }} \
+            --user ${{ secrets.DOCKER_REGISTRY_USERNAME }} \
             --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} \
-      - name: Skopeo Delete Image
+      - name: regctl Delete Image Tag
         run: |
-          skopeo delete docker://${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
+          regctl tag delete ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}:${{ env.VERSION }}
