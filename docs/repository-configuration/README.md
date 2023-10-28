@@ -5,7 +5,14 @@ This section guides you on how this repository was setup
 ## Managing the automatic deletion of branches
 You can have head branches automatically deleted after pull requests are merged in your repository.
 
-See steps on [Managing the automatic deletion of branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches
+See [steps](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches)
+
+## Configuring Dependabot security updates
+You can use [Dependabot security updates](https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates) or manual pull requests to easily update vulnerable dependencies.
+
+See [steps](https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates)
+
+See [configuration](../../.github/dependabot.yml)
 
 ## Code Analysis/Scanning
 ### Configuring repository for GitHub CodeQL
