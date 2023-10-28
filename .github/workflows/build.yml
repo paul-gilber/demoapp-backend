@@ -49,13 +49,12 @@ jobs:
           cache: maven
 
       # Build with Maven and Upload Container Image to Docker Hub
-      # Docker Hub repositor: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
       - name: Build
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/demoapp    # Use service name when `container` keyword is defined
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: local
-          DOCKER_REGISTRY_URL: docker.io/paulgilber/
+          DOCKER_REGISTRY_URL: paulgilber/    # Docker Hub repository: https://hub.docker.com/repository/docker/paulgilber/demoapp-backend
           DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
         run: |
