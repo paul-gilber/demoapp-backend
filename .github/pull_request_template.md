@@ -1,3 +1,7 @@
+<!--
+  Creating a pull request template for your repository
+  https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository 
+-->
 Checklist:
 * [ ] The title of the PR states what changed and the related issues number (used for the release note).
 * [ ] I've included "Closes [ISSUE #]" or "Fixes [ISSUE #]" in the description to automatically close the associated issue.
