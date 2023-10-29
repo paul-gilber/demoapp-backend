@@ -10,7 +10,7 @@ on:
   push:
     paths-ignore:
       - '**.md'    # Ignore documentation changes
-      - '.github/**(!code-scan-sonarcloud.yml)'    # Ignore workflow changes
+      - '.github/**(!code-scan-sonarcloud.yml)'    # Ignore other workflow changes
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 
