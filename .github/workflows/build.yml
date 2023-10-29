@@ -14,6 +14,8 @@ on:
     paths-ignore:
       - '**.md'    # Ignore documentation changes
       - '.github/**(!build.yml)'    # Ignore other workflow changes
+  # Run workflow on pull request
+  pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
   # Allow user to manually trigger Workflow execution
   workflow_dispatch:
 
@@ -29,7 +31,6 @@ concurrency:
 # Set Workflow-level environment variables
 env:
   PROJECT: demoapp-backend
-  VERSION: ${{ github.ref_name }}
 
 jobs:
   build:
@@ -68,6 +69,17 @@ jobs:
         ports:
           - 3306:3306    # Opens tcp port 3306 on the host and service container
     steps:
+      # Workaround for the absence of github.branch_name
+      # Setting an environment variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      - name: Set VERSION
+        if: github.head_ref != ''
+        run: |
+          echo "VERSION=${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set VERSION
+        if: github.head_ref == ''
+        run: |
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+
       # Fail job when invalid builder is selected
       - name: Check BUILDER environment variable
         # if expression clarification: https://github.com/github/docs/blob/main/data/reusables/actions/expression-syntax-if.md
@@ -159,6 +171,17 @@ jobs:
     env:
       TRIVY_CACHE_DIR: /tmp/trivy/
     steps:
+      # Workaround for the absence of github.branch_name
+      # Setting an environment variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      - name: Set VERSION
+        if: github.head_ref != ''
+        run: |
+          echo "VERSION=${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set VERSION
+        if: github.head_ref == ''
+        run: |
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
 

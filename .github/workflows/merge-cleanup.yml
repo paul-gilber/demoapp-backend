@@ -20,7 +20,6 @@ permissions: {}    # This Workflow does not require any permission
 # Set Workflow-level environment variables
 env:
   PROJECT: demoapp-backend
-  VERSION: ${{ github.head_ref }}    # Set source branch as version
 
 jobs:
   output-information:
@@ -50,6 +49,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: docker-hub
     steps:
+      # Workaround for the absence of github.branch_name
+      # Setting an environment variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      - name: Set VERSION
+        if: github.head_ref != ''
+        run: |
+          echo "VERSION=${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set VERSION
+        if: github.head_ref == ''
+        run: |
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+
       # Install regctl: https://github.com/regclient/regclient
       - name: Install regctl
         run: |

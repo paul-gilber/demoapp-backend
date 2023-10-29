@@ -23,10 +23,6 @@ concurrency:
 permissions:
   contents: read
 
-# Set Workflow-level environment variables
-env:
-  VERSION: ${{ github.ref_name }}
-
 jobs:
   sonarcloud:
     # Run job when not triggered by a merge
@@ -37,6 +33,17 @@ jobs:
       pull-requests: read    # Allow SonarCloud to get pull request details
     environment: sonarcloud    # Use `sonarcloud` repository environment
     steps:
+      # Workaround for the absence of github.branch_name
+      # Setting an environment variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      - name: Set VERSION
+        if: github.head_ref != ''
+        run: |
+          echo "VERSION=${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set VERSION
+        if: github.head_ref == ''
+        run: |
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
         with:
