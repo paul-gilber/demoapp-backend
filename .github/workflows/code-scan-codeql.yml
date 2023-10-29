@@ -16,7 +16,6 @@ on:
       - '.github/**(!code-scan-codeql.yml)'    # Ignore other workflow changes
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
-    types: [opened, reopened, synchronize]
 # Run a single job at a time: https://docs.github.com/en/actions/using-jobs/using-concurrency
 concurrency:
   group: codeql-${{ github.ref }}
