@@ -1,0 +1,6 @@
++task+ Hug your Checklist Buddy once a day.
+
+# has enhancements
+--files ** +title+ Enhancement :art:
+--files ui/** +task+ UI changes visually inspected on Chrome
+--files ui/** +task+ UI changes visually inspected on Safari
