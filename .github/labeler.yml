@@ -10,11 +10,6 @@ documentation:
   # to any changes within docs folder
   - docs
 
-# Add `enhancement` label
-enhancement:
-  # to any changes within the entire repository
-  - '**'
-
 # Add `scope/java` label
 scope/java:
   # to any changes of application code
@@ -59,3 +54,8 @@ scope/git:
 scope/lint:
   # to any changes to files, folders and subfolders with `lint` keyword
   - '**lint**'
+
+# Add `enhancement` label
+enhancement:
+  # to any changes within the entire repository
+  - '**'
