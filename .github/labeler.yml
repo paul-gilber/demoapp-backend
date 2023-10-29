@@ -1,0 +1,61 @@
+---
+# actions/labeler configuration: https://github.com/marketplace/actions/labeler
+
+# Default GitHub Labels: https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels#about-default-labels
+
+# Add `enhancement` label
+enhancement:
+  # to any changes within the entire repository
+  - '**'
+
+# Add `documentation` label
+documentation:
+  # to any changes of markdown files on any folder or subfolders
+  - '**.md'
+  # to any changes within docs folder
+  - docs/**
+
+# Add `scope/java` label
+scope/java:
+  # to any changes of application code
+  - src/**
+  # to any changes of application dependencies
+  - pom.xml
+
+# Add `scope/container` label
+scope/container:
+  # to any changes of any Containerfile on any folder or subfolders
+  - '**Containerfile*'
+  # to any chages to container-structure-test.yaml file
+  - container-structure-test.yaml
+  # to any chages to compose.yaml or compose.yml file
+  - compose.y*ml
+
+# Add `scope/devcontainer` label
+scope/devcontainer:
+  # to any changes within .devcontainer folder
+  - .devcontainer/**
+
+# Add `scope/github` label
+scope/github:
+  # to any changes within .github folder
+  - .github/**
+
+# Add `scope/vscode` label
+scope/vscode:
+  # to any changes within .vscode folder
+  - .vscode/**
+
+# Add `scope/git` label
+scope/git:
+  # to any changes within .git folder
+  - .git/**
+  # to any chages to .gitattributes file
+  - .gitattributes
+  # to any chages to .gitignore file
+  - .gitignore
+
+# Add `scope/lint` label
+scope/lint:
+  # to any changes to files, folders and subfolders with `lint` keyword
+  - '**lint**'
