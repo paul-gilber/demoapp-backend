@@ -36,8 +36,13 @@ jobs:
       # Workaround for the absence of github.branch_name
       # Setting an environment variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
       - name: Set VERSION
+        if: github.head_ref != ''
         run: |
-          echo "VERSION=${{ github.event.pull_request && github.head_ref || github.ref_name }}" >> $GITHUB_ENV
+          echo "VERSION=${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set VERSION
+        if: github.head_ref == ''
+        run: |
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
