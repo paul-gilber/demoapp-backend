@@ -1,9 +1,10 @@
-+task+ Hug your Checklist Buddy once a day.
++title+ demoapp-backend checklist
 
-# has enhancements
---files ** +title+ Enhancement :art:
---files ui/** +task+ UI changes visually inspected on Chrome
---files ui/** +task+ UI changes visually inspected on Safari
-
-# has devcontainer changes
+# devcontainer changes
 --files .devcontainer/** +task+ With dev container changes
+
+# documentation changes
+--files **.md +task+ With documentation changes
+
+# enhancements
+--files ** +task+ With enhancements
