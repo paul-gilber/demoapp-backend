@@ -1,0 +1,6 @@
+---
+# Issue Label Bot configuration: https://github.com/marketplace/issue-label-bot
+label-alias:
+  bug: 'kind/bug'
+  feature_request: 'enhancement'
+  question: 'question'
