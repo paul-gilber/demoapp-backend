@@ -25,6 +25,10 @@ concurrency:
 permissions:
   contents: read
 
+# Set Workflow-level environment variables
+env:
+  VERSION: ${{ github.ref_name }}
+
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
@@ -78,11 +82,15 @@ jobs:
 
       # SonarCloud GitHub Action fails when a Maven project is detected and recommends usage of Maven Sonar plugin
       - name: SonarCloud Scan via Maven
+        # Get SONAR_ORGANIZATION and SONAR_PROJECT_KEY from https://sonarcloud.io/project/information?id=paul-gilber_demoapp-backend
         # SONAR_ORGANIZATION must be defined in `sonarcloud` repository environment
+        # SONAR_PROJECT_KEY must be defined in `sonarcloud` repository environment
         run: |
           mvn -B verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Drevision=${{ env.VERSION }} \
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} \
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} \
             -Dmaven.test.skip=true \
             -Ddockerfile.skip=true
         env:
