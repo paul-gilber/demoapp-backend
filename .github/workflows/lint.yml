@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Cancel when triggered by Merge commit
         # `push` event payload: https://docs.github.com/en/webhooks/webhook-events-and-payloads#push
-        # if: github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ')
+        if: github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ')
         # Cancel a workflow run: https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#cancel-a-workflow-run
         run: |
           curl -L \
