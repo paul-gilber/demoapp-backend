@@ -15,8 +15,7 @@ on:
   #     - main
 
 # Set Workflow-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-permissions:
-  contents: read
+permissions: {}    # This Workflow does not require any permission
 
 # Set Workflow-level environment variables
 env:
