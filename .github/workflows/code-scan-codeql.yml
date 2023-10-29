@@ -1,4 +1,5 @@
 ---
+# Workflow syntax for GitHub Actions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 # See CodeQL results at https://github.com/paul-gilber/demoapp-backend/security/code-scanning/tools/CodeQL/status/
 name: Scan Code with CodeQL
 
@@ -12,7 +13,7 @@ on:
       - 'cherry-pick-*'
     paths-ignore:
       - '**.md'    # Ignore documentation changes
-      - '.github/**'    # Ignore workflow changes
+      - '.github/**(!code-scan-codeql.yml)'    # Ignore other workflow changes
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 

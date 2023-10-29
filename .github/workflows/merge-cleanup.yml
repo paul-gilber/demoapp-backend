@@ -1,6 +1,8 @@
 ---
+# Workflow syntax for GitHub Actions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 name: Merge Cleanup
 
+# Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
   # Run Workflow upon pull request
   pull_request:
@@ -12,6 +14,7 @@ on:
   #   branches:
   #     - main
 
+# Set Workflow-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 permissions:
   contents: read
 
