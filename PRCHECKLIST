@@ -6,5 +6,9 @@
 # documentation changes
 --files **.md +task+ With documentation changes
 
+# java changes
+--files src/** +task+ With source code changes
+--files **pom.xml +task+ With dependency changes
+
 # enhancements
 --files ** +task+ With enhancements
