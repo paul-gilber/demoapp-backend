@@ -10,12 +10,23 @@ documentation:
   # to any changes within docs folder
   - docs/**
 
-# Add `core` label
-core:
+# Add `java` label
+java:
   # to any changes of application code
   - src/**
-  # to any changes of application dependencies
+
+# Add `dependencies` label
+dependencies:
+  - pom.xml    # maven
+  - '*.gradle'    # gradle
+
+# Add `maven` label
+maven:
   - pom.xml
+
+# Add `gradle` label
+gradle:
+  - '*.gradle'
 
 # Add `container` label
 container:
