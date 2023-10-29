@@ -91,7 +91,6 @@ jobs:
         with:
           path: |
             ~/.m2
-            target/*.jar
           key: maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Set up QEMU
