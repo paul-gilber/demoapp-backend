@@ -3,6 +3,11 @@
 
 # Default GitHub Labels: https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels#about-default-labels
 
+# Add `enhancement` label
+enhancement:
+  # to any changes within the entire repository
+  - '**'
+
 # Add `documentation` label
 documentation:
   # to any changes of markdown files on any folder or subfolders
@@ -54,8 +59,3 @@ scope/git:
 scope/lint:
   # to any changes to files, folders and subfolders with `lint` keyword
   - '**lint**'
-
-# Add `enhancement` label
-enhancement:
-  # to any changes within the entire repository
-  - '**'
