@@ -26,6 +26,16 @@ permissions:
   contents: read
 
 jobs:
+  cancel-on-merge:
+    runs-on: ubuntu-latest
+    permissions: {}    # This Job does not require any permissions
+    steps:
+      - name: Cancel when triggered by Merge commit
+        # `push` event payload: https://docs.github.com/en/webhooks/webhook-events-and-payloads#push
+        if: (github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ') == false)
+        run: |
+          echo "Triggered by Merge commit"
+          exit 1
   codecov:
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
     steps:
