@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Cancel when triggered by Merge commit
         # `push` event payload: https://docs.github.com/en/webhooks/webhook-events-and-payloads#push
-        if: (github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ') == false)
+        if: github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ')
         run: |
           echo "Triggered by Merge commit"
           exit 1
