@@ -12,9 +12,12 @@ on:
       - '**.yaml'
       - '**.yml'
       - '**.yamllint'
-  # Run workflow on pull request
-  pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
-
+  # # Run workflow on pull request
+  # pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
+  # Run workflow on pull request to specified target branch(es)
+  pull_request_target:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
+    branches:
+      - main
   # Allow other Workflows to call this Workflow
   workflow_call:
 

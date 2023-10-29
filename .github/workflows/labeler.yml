@@ -3,8 +3,11 @@ name: Pull Request Labeler
 
 # Events that trigger workflows: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
-  pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
-
+  # pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
+  # Run workflow on pull request to specified target branch(es)
+  pull_request_target:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
+    branches:
+      - main
 # Set Workflow-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 permissions:
   contents: read
