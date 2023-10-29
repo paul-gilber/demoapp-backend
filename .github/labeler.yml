@@ -11,7 +11,7 @@ enhancement:
 # Add `documentation` label
 documentation:
   # to any changes of markdown files on any folder or subfolders
-  - '**.md'
+  - '**/*.md'
   # to any changes within docs folder
   - docs/**
 
@@ -24,12 +24,13 @@ scope/java:
 
 # Add `scope/container` label
 scope/container:
-  # to any changes of any Containerfile on any folder or subfolders
-  - '**Containerfile*'
+  # to any changes of any Containerfile within this repository
+  - '**/Containerfile*'
   # to any chages to container-structure-test.yaml file
   - container-structure-test.yaml
   # to any chages to compose.yaml or compose.yml file
-  - compose.y*ml
+  - compose.yaml
+  - compose.yml
 
 # Add `scope/devcontainer` label
 scope/devcontainer:
