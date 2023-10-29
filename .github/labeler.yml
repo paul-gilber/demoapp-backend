@@ -8,12 +8,12 @@ documentation:
   # to any changes of markdown files on any folder or subfolders
   - '**.md'
   # to any changes within docs folder
-  - docs
+  - docs/**
 
 # Add `scope/java` label
 scope/java:
   # to any changes of application code
-  - src
+  - src/**
   # to any changes of application dependencies
   - pom.xml
 
@@ -29,22 +29,22 @@ scope/container:
 # Add `scope/devcontainer` label
 scope/devcontainer:
   # to any changes within .devcontainer folder
-  - .devcontainer
+  - .devcontainer/**
 
 # Add `scope/github` label
 scope/github:
   # to any changes within .github folder
-  - .github
+  - .github/**
 
 # Add `scope/vscode` label
 scope/vscode:
   # to any changes within .vscode folder
-  - .vscode
+  - .vscode/**
 
 # Add `scope/git` label
 scope/git:
   # to any changes within .git folder
-  - .git
+  - .git/**
   # to any chages to .gitattributes file
   - .gitattributes
   # to any chages to .gitignore file
