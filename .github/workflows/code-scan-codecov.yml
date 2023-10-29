@@ -28,7 +28,7 @@ permissions:
 jobs:
   codecov:
     # Run job when not triggered by a merge
-    if: (github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ') == false)
+    if: (github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ') == false) || (github.event_name != 'push')
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
     steps:
       - name: Checkout repository

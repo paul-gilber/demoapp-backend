@@ -34,7 +34,7 @@ env:
 jobs:
   build:
     # Run job when not triggered by a merge
-    if: (github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ') == false)
+    if: (github.event_name == 'push' && contains(toJSON(github.event.head_commit.message), 'Merge pull request ') == false) || (github.event_name != 'push')
     runs-on: ubuntu-latest
     environment: docker-hub    # Use `docker-hub` repository environment
     # Set Job-level environment variables
