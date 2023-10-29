@@ -9,7 +9,10 @@ on:
   push:
     paths-ignore:
       - '**.md'    # Ignore documentation changes
-      - '.github/**'    # Ignore workflow changes
+      - '.github/workflows/build.yml'    # Ignore workflow changes
+      - '.github/workflows/code-scan-codecov.yml'    # Ignore workflow changes
+      - '.github/workflows/code-scan-codeql.yml'    # Ignore workflow changes
+      - '.github/workflows/merge-cleanup.yml'    # Ignore workflow changes
   # Run workflow on pull request
   pull_request:    # By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
 
