@@ -20,6 +20,8 @@ See [configuration](../../.github/dependabot.yml)
 
 See [steps](https://docs.sonarcloud.io/getting-started/github/)
 
+See [workflow](../../.github/workflows/code-scan-sonarcloud.yml)
+
 See [scan results](https://sonarcloud.io/projects)
 
 ### Integrating repository with CodeCov
