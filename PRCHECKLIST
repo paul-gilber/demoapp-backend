@@ -4,3 +4,6 @@
 --files ** +title+ Enhancement :art:
 --files ui/** +task+ UI changes visually inspected on Chrome
 --files ui/** +task+ UI changes visually inspected on Safari
+
+# has devcontainer changes
+--files .devcontainer/** +task+ With dev container changes
