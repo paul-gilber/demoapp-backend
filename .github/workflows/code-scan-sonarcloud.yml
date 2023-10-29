@@ -30,6 +30,9 @@ env:
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest    # GitHub-hosted runners: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    # Set Job-level permissions: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+    permissions:
+      pull-requests: read    # Allow SonarCloud to get pull request details
     environment: sonarcloud    # Use `sonarcloud` repository environment
     steps:
       - name: Checkout repository
