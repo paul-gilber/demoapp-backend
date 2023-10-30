@@ -108,7 +108,7 @@ jobs:
         uses: docker/metadata-action@v5    # https://github.com/marketplace/actions/docker-metadata-action
         with:
           images: |
-            ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}
+            ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}
             ghcr.io/${{ github.repository }}
 
       - name: Docker Build and Push
