@@ -16,3 +16,10 @@ inputs:
 runs:
   using: docker
   image: Containerfile
+  args:
+    - container-structure-test
+    - test
+    - --image
+    - ${{ inputs.image }}
+    - --config
+    - ${{ inputs.configFile }}
