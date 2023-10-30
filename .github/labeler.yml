@@ -32,6 +32,8 @@ gradle:
 container:
   # to any changes of any Containerfile within this repository
   - '**/Containerfile*'
+  # to any changes of any Dockerfile within this repository
+  - '**/Dockerfile*'
   # to any chages to container-structure-test.yaml file
   - container-structure-test.yaml
   # to any chages to compose.yaml or compose.yml file
