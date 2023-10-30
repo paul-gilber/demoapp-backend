@@ -72,7 +72,8 @@
 				"vscjava.vscode-java-debug",
 				"cweijan.vscode-mysql-client2",
 				"redhat.java",
-				"hashicorp.hcl"
+				"hashicorp.hcl",
+				"Perkovec.emoji"
 			]
 		}
 	},

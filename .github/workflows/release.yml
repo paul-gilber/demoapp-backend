@@ -48,8 +48,8 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             # branch event
             type=ref,event=branch
-            # dynamically set the branch name as a prefix (short sha format)
-            type=sha,prefix={{branch}}-
+            # dynamically set the branch name and tag as a prefix (short sha format)
+            type=sha,prefix={{branch}}{{tag}}-
             # tag event
             type=ref,event=tag
 
