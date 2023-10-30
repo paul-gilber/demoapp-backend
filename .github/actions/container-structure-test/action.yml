@@ -14,5 +14,5 @@ inputs:
     required: false
     default: default-container-structure-test.yaml
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: Containerfile
