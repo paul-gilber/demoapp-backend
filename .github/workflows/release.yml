@@ -1,0 +1,126 @@
+---
+# Publishing Docker images: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
+# Automatically generated release notes https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+name: Publish Container Image
+
+# Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+on:
+  # Trigger Workflow when a release is published
+  # release payload: https://docs.github.com/en/webhooks/webhook-events-and-payloads#release
+  release:
+    types: [published]
+  # for testing
+  push:
+
+# Set Workflow-level environment variables
+env:
+  PROJECT: demoapp-backend
+
+jobs:
+  push_to_registries:
+    name: Push Docker image to multiple registries
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    environment: docker-hub    # Use `docker-hub` repository environment
+    # Set Job-level environment variables
+    env:
+      MYSQL_DATABASE: demoapp
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: local
+    services:
+      mysql:
+        image: mysql:8.0    # Use same mysql image from devcontainer.json
+        env:
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+        # Ports are required only when `container` keyword is not defined
+        ports:
+          - 3306:3306    # Opens tcp port 3306 on the host and service container
+    steps:
+      # Workaround for the absence of github.branch_name
+      # Setting an environment variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      - name: Set VERSION
+        if: github.head_ref != ''
+        run: |
+          echo "VERSION=${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set VERSION
+        if: github.head_ref == ''
+        run: |
+          echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Java
+      - uses: actions/setup-java@v3    # https://github.com/actions/setup-java
+        with:
+          distribution: microsoft    # Microsoft was selected to match Visual Studio Code Dev Container Java distribuition, see .devcontainer/devcontainer.json. Supported distributions: https://github.com/actions/setup-java#supported-distributions
+          java-version: '17'    # Java version must match `project.properties['java.version']` in pom.xml
+
+      # Cache Maven dependencies
+      - name: Install and Cache Maven dependencies
+        id: cache
+        uses: actions/cache@v3    # https://github.com/marketplace/actions/cache#using-a-combination-of-restore-and-save-actions
+        with:
+          path: |
+            ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml') }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3    # https://github.com/marketplace/actions/docker-setup-build
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3    # https://github.com/marketplace/actions/docker-login
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY_URL }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3    # https://github.com/marketplace/actions/docker-login
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build with Maven and Upload Container Image to Docker Hub
+      - name: Maven Build
+        env:
+          # Use localhost when `container` keyword is not defined
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/demoapp
+          # Use service name when `container` keyword is defined
+          # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demoapp
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+        # Use `vars` context when using repository environment variables: https://docs.github.com/en/actions/learn-github-actions/contexts#vars-context
+        run: |
+          mvn package -Ddockerfile.skip=true \
+            -Drevision=${{ env.VERSION }} \
+            -DDOCKER_REGISTRY_URL=${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5    # https://github.com/marketplace/actions/docker-metadata-action
+        with:
+          images: |
+            ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}
+            ghcr.io/${{ github.repository }}
+
+      - name: Docker Build and Push
+        uses: docker/build-push-action@v5    # https://github.com/marketplace/actions/build-and-push-docker-images
+        with:
+          context: .
+          file: Containerfile
+          # build-args syntax clarification: https://github.com/docker/build-push-action/issues/557#issuecomment-1030412477
+          build-args: |
+            "JAR_FILE=${{ env.PROJECT }}-${{ env.VERSION }}.jar"
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
