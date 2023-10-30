@@ -38,3 +38,10 @@ template: |
   ## Changes
 
   $CHANGES
+
+  ## Contributors
+
+  $CONTRIBUTORS
+
+  ## Install from the command line
+    docker pull ghcr.io/$OWNER/$REPOSITORY:v$RESOLVED_VERSION
