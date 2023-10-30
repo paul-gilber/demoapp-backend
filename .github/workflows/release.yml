@@ -8,8 +8,7 @@ on:
   # Trigger Workflow on push event
   push:
     branches:
-      - main    # When `latest` image tag is published when default branch is updated
-      - use-docker-hub-as-test-registry    # for testing
+      - main    # When `latest` image tag is published when default branch is update
     tags:
       - 'v*'    # When a tag starting with `v` is created e.g. v1.0.0
 
