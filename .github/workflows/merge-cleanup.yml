@@ -8,6 +8,9 @@ on:
   pull_request:
     types: [closed]
 
+  # Allow user to manually trigger Workflow execution
+  workflow_dispatch:
+
   # Run Workflow upon pull request to specified target branch(es)
   # pull_request_target:
   #   types: [closed]
@@ -27,7 +30,7 @@ jobs:
     steps:
       - name: Output Information
         run: |
-          echo "${{ toJson(github) }}"
+          echo "${{ toJSON(github) }}"
 
   # Skopeo deletes image tag by reference which is not allowed by Docker Hub
   # docker-hub-skopeo:
