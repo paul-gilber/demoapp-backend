@@ -67,7 +67,7 @@ jobs:
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
           set: |
-            target.args.BUILD_IMAGE=registry.access.redhat.com/ubi8/openjdk-17
-            target.args.RUNTIME_IMAGE=registry.access.redhat.com/ubi8/openjdk-17-runtime
+            build.args.BUILD_IMAGE=registry.access.redhat.com/ubi8/openjdk-17
+            build.args.RUNTIME_IMAGE=registry.access.redhat.com/ubi8/openjdk-17-runtime
           targets: build
           push: true
