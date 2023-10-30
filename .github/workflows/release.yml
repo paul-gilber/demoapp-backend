@@ -76,5 +76,5 @@ jobs:
           set: |
             build.args.BUILD_IMAGE=${{ env.BUILD_IMAGE }}
             build.args.RUNTIME_IMAGE=${{ env.RUNTIME_IMAGE }}
-          targets: build
+          targets: gha-build
           push: true
