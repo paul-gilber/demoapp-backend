@@ -188,7 +188,7 @@ jobs:
           configFile: ./container-structure-test.yaml
 
   scan:
-    needs: [build, container-structure-test]
+    needs: build
     runs-on: ubuntu-latest
     # Set Job-level permissions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
     permissions:
