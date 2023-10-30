@@ -71,7 +71,8 @@
 				"vscjava.vscode-java-test",
 				"vscjava.vscode-java-debug",
 				"cweijan.vscode-mysql-client2",
-				"redhat.java"
+				"redhat.java",
+				"hashicorp.hcl"
 			]
 		}
 	},
