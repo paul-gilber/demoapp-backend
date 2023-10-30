@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Output Information
         run: |
-          echo "${{ toJson(github) }}"
+          echo "${{ toJSON(github) }}"
 
   # Skopeo deletes image tag by reference which is not allowed by Docker Hub
   # docker-hub-skopeo:
