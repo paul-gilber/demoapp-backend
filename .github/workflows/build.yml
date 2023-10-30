@@ -197,6 +197,10 @@ jobs:
         # CONTAINER_IMAGE_URL is defined in GITHUB_ENV
         run: |
           docker pull ${{ env.CONTAINER_IMAGE_URL }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4    # https://github.com/marketplace/actions/checkout
+
       - name: Run Container Structure Test
         uses: ./.github/actions/container-structure-test
         with:
