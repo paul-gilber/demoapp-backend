@@ -5,12 +5,13 @@ name: Publish Container Image
 
 # Events: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
-  # Trigger Workflow when a release is published
-  # release payload: https://docs.github.com/en/webhooks/webhook-events-and-payloads#release
-  release:
-    types: [published]
-  # for testing
+  # Trigger Workflow on push event
   push:
+    branches:
+      - main    # When `latest` image tag is published when default branch is updated
+      - publish-release    # for testing only
+    tags:
+      - 'v*'    # When a tag starting with `v` is created e.g. v1.0.0
 
 # Set Workflow-level environment variables
 env:
@@ -53,21 +54,27 @@ jobs:
             ${{ vars.DOCKER_REGISTRY_URL }}/${{ vars.DOCKER_REPOSITORY }}/${{ env.PROJECT }}
             ghcr.io/${{ github.repository }}
           tags: |
+            # set latest tag for default branch
+            type=raw,value=latest,enable={{is_default_branch}}
+            # branch event
             type=ref,event=branch
+            # dynamically set the branch name as a prefix (short sha format)
+            type=sha,prefix={{branch}}-
+            # tag event
             type=ref,event=tag
-            type=ref,event=pr
-            type=sha
-            type=sha,format=long
 
       # Docker Buildx Bake supports multi-platform builds: https://docs.docker.com/build/bake/
       - name: Docker Build and Push (Bake)
+        env:
+          BUILD_IMAGE: registry.access.redhat.com/ubi8/openjdk-17
+          RUNTIME_IMAGE: registry.access.redhat.com/ubi8/openjdk-17-runtime
         uses: docker/bake-action@v4    # https://github.com/marketplace/actions/docker-buildx-bake
         with:
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
           set: |
-            build.args.BUILD_IMAGE=registry.access.redhat.com/ubi8/openjdk-17
-            build.args.RUNTIME_IMAGE=registry.access.redhat.com/ubi8/openjdk-17-runtime
+            build.args.BUILD_IMAGE=${{ env.BUILD_IMAGE }}
+            build.args.RUNTIME_IMAGE=${{ env.RUNTIME_IMAGE }}
           targets: build
           push: true

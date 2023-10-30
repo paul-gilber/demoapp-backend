@@ -30,8 +30,8 @@ metadataTest:
   exposedPorts: ["8080"]
   volumes: []
   entrypoint: []
-  cmd: ["/usr/bin/java", "-jar", "demoapp-backend.jar"]
-  workdir: "/home/jboss"
+  cmd: ["/usr/bin/java", "-jar", "/app/demoapp-backend.jar"]
+  workdir: /app
   user: 185
 
 commandTests:
@@ -48,7 +48,7 @@ fileExistenceTests:
     path: /home/jboss/pom.xml
     shouldExist: false
   - name: Confirm existence of application JAR
-    path: /home/jboss/demoapp-backend.jar
+    path: /app/demoapp-backend.jar
     shouldExist: true
     permissions: -rw-r--r--
     # UID and GID values are from based image: registry.access.redhat.com/ubi8/openjdk-17-runtime
