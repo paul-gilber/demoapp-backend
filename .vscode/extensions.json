@@ -7,6 +7,7 @@
         "vscjava.vscode-java-debug",
         "ms-vscode-remote.remote-containers",
         "cweijan.vscode-mysql-client2",
-        "redhat.java"
+        "redhat.java",
+        "hashicorp.hcl"
     ]
 }
