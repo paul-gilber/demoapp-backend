@@ -40,4 +40,6 @@ template: |
   $CHANGES
 
   ## Install from the command line
-    docker pull ghcr.io/$OWNER/$REPOSITORY:v$RESOLVED_VERSION
+  ```sh
+  docker pull ghcr.io/$OWNER/$REPOSITORY:v$RESOLVED_VERSION
+  ```
