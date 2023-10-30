@@ -15,7 +15,7 @@ inputs:
     default: default-container-structure-test.yaml
 runs:
   using: docker
-  image: Containerfile
+  image: Dockerfile
   args:
     - container-structure-test
     - test
