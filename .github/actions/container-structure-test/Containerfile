@@ -8,5 +8,4 @@ RUN apk add --no-cache curl git
 # Get command from: https://github.com/GoogleContainerTools/container-structure-test#linux
 RUN curl -LO https://storage.googleapis.com/container-structure-test/${VERSION}/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
 
-ENTRYPOINT /bin/sh
 CMD container-structure-test test --image $INPUT_IMAGE --config $INPUT_CONFIGFILE
