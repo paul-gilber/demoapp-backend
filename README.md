@@ -117,12 +117,3 @@ Run below command to run [test](container-structure-test.yaml) for `demoapp-back
 ```sh
 container-structure-test test --image demoapp-backend --config container-structure-test.yaml
 ```
-
-## Changes
-1. Setup of [Visual Studio Code](https://code.visualstudio.com/) [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers). See [devcontainer.json](./.devcontainer/devcontainer.json)
-2. Removal of hardcoded credentials in [application.properties](./src/main/resources/application.properties)
-3. Replacement of `localhost` hostname for mysql database url with `mysql` in [application.properties](./src/main/resources/application.properties)
-4. Creation of [Containerfile](./Containerfile)
-5. Creation of [compose.yaml](./compose.yaml)
-6. Enablement of Spring Boot Actuator in [pom.xml](./pom.xml)
-7. [Container Structure Test](#testing-application-container-image-with-container-structure-tests)
