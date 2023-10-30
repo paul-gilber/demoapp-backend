@@ -6,6 +6,6 @@ WORKDIR /app
 
 # Add the service itself
 ARG JAR_FILE
-COPY target/${JAR_FILE} demoapp-backend.jar
+COPY --chown=185:0 target/${JAR_FILE} demoapp-backend.jar
 
 CMD ["/usr/bin/java", "-jar", "/app/demoapp-backend.jar"]
