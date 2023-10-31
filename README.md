@@ -103,11 +103,12 @@ services:
       - "8080:8080" # Forwards container port 8080 to host port 8080. URL: http://localhost:8080/. Actuator URL: http://localhost:8080/actuator/health
 ```
 ```sh
-docker-compose up # builds application image when it doesn't exist
-docker-compose up --build # rebuild application image
-docker-compose down # remove containers, networks and volumes created by docker compose
+# Note: by default, compose.yaml was configured to use an existing application image. Run build before docker compose or update compose.yaml and enable `build` field
 
-# Note: by default, compose.yaml was configured to use an existing application image. Run build before docker-compose or update compose.yaml and enable `build` field
+docker compose --project-directory deploy/docker-compose up
+docker compose --project-directory deploy/docker-compose up --build # rebuild application image, only applicable if `build` field is enabled
+docker compose --project-directory deploy/docker-compose down # remove containers, networks and volumes created by docker compose
+
 ```
 
 ## Testing Application Container Image with Container Structure Tests
