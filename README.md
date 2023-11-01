@@ -20,6 +20,8 @@ git config core.hooksPath .githooks
 
 6. Uses [Container Structure Tests](https://github.com/GoogleContainerTools/container-structure-test) for running metadata, command and file existence tests to ensure consistency of image builds. See [container-structure-test.yaml](container-structure-test.yaml)
 
+7. Uses [GitHub Actions workflows](https://docs.github.com/en/actions/using-workflows/about-workflows) for automating builds, scans, tests, publishing of [GitHub Packages](https://github.com/features/packages), automatic pull request labeling, and release drafting (and versioning)
+
 ## Dependencies
 1. MySQL database instance
 
