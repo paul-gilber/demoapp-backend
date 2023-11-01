@@ -59,10 +59,12 @@ vscode-settings:
 git-config:
   # to any changes within .git folder
   - .git/**
-  # to any chages to .gitattributes file
+  # to any changes to .gitattributes file
   - .gitattributes
-  # to any chages to .gitignore file
+  # to any changes to .gitignore file
   - .gitignore
+  # to any changes within .githooks folder
+  - .githooks/**
 
 # Add `lint` label
 lint:
