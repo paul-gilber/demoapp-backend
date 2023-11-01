@@ -3,6 +3,59 @@ This project was forked from: [arjungautam1/fullstack-backend](https://github.co
 
 See [repository configuration](docs/repository-configuration/README.md)
 
+## Features
+1. Provides consistent development environment across users using [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers). See [configuration](.devcontainer/devcontainer.json)
+
+2. Uses [git pre-commit hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) to prevent Workflow failures caused by trivial errors like linter errors. This [pre-commit hook](.githooks/pre-commit) is shared across users through [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) using [postCreateCommand.sh](.devcontainer/postCreateCommand.sh) which sets hooks path to `.githooks`
+
+3. Uses [Docker Compose](https://docs.docker.com/compose/) to enable local deployment of the `application` (demoapp-backend) including all `dependencies` (mysql). See [compose.yaml](deploy/docker-compose/compose.yaml)
+
+4. Provides [pull request checklist](.github/pull_request_template.md). See [sample pull request](https://github.com/paul-gilber/demoapp-backend/pull/34)
+
+5. Supports multi-platform container image builds using [Docker buildx bake](https://docs.docker.com/build/bake/). See [docker-bake.hcl](docker-bake.hcl)
+
+6. Uses [Container Structure Tests](https://github.com/GoogleContainerTools/container-structure-test) for running metadata, command and file existence tests to ensure consistency of image builds. See [container-structure-test.yaml](container-structure-test.yaml)
+
+7. Uses [GitHub Actions workflows](https://docs.github.com/en/actions/using-workflows/about-workflows) for automating builds, scans, tests, publishing of [GitHub Packages](https://github.com/features/packages), automatic pull request labeling, and release drafting (and versioning)
+
+## GitHub Actions workflows
+The following workflows are included in this project:
+
+1. [Build](.github/workflows/build.yml)
+- Builds application container image and pushes it to [Docker Hub](https://hub.docker.com/)
+- Tests application container image with [Container Structure Tests](https://github.com/GoogleContainerTools/container-structure-test)
+- Scans application container image with [Aqua Security Trivy](https://trivy.dev/#:~:text=Trivy%20is%20the%20most%20popular,Apache%2D2.0%20License)
+
+2. [Coverage reports with CodeCov](.github/workflows/code-scan-codecov.yml)
+
+[Codecov](https://about.codecov.io/) is the all-in-one code coverage reporting solution for any test suite — giving developers actionable insights to deploy reliable code with confidence. Trusted by over 29,000 organizations.
+
+3. [Code Analysis with CodeQL](.github/workflows/code-scan-codecov.yml)
+
+[CodeQL](https://codeql.github.com/docs/codeql-overview/about-codeql/) is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis.
+
+4. [Code Analysis with SonarCloud](.github/workflows/code-scan-sonarcloud.yml)
+
+[SonarCloud](https://docs.sonarcloud.io/) is a cloud-based code analysis service designed to detect coding issues.
+
+5. [Pull Request Labeler](.github/workflows/labeler.yml)
+
+Automatically label new pull requests based on the paths of files being changed.
+
+6. [Release Drafter](.github/workflows/release-drafter.yml)
+
+Drafts your next release notes as pull requests are merged into `main`.
+Release drafter recommends release version based on [release-drafter.yml](.github/release-drafter.yml#L22)
+See [sample releases](https://github.com/paul-gilber/demoapp-backend/releases).
+
+7. [Publish Container Image to GitHub Packages](.github/workflows/release.yml)
+```
+To create a release:
+1. Create pre-release from draft. A corresponding tag is created by this step e.g. `v1.0.0`. Workflow is triggered when a tag starting with `v` is created.
+2. Workflow builds and publishes release image to GitHub packages
+3. Set pre-release as latest version
+```
+
 ## Dependencies
 1. MySQL database instance
 
@@ -63,7 +116,7 @@ docker build -f Containerfile.multistage -t demoapp-backend:latest .
 ## Run Application from Visual Studio Code Dev Container
 ### Run Application using Java
 ```sh
-java -jar target/demoapp-backend-0.0.1-SNAPSHOT.jar
+java -jar target/demoapp-backend-1.0.0-SNAPSHOT.jar
 ```
 ### Run Application using Docker Compose
 [Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. Then, with a single command, you create and start all the services from your configuration.
@@ -116,5 +169,5 @@ docker compose --project-directory deploy/docker-compose down # remove container
 
 Run below command to run [test](container-structure-test.yaml) for `demoapp-backend`
 ```sh
-container-structure-test test --image demoapp-backend --config container-structure-test.yaml
+container-structure-test test --image demoapp-backend:latest --config container-structure-test.yaml
 ```
