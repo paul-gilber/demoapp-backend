@@ -16,6 +16,8 @@ git config core.hooksPath .githooks
 
 4. Provides [pull request checklist](.github/pull_request_template.md). See [sample pull request](https://github.com/paul-gilber/demoapp-backend/pull/34)
 
+5. Supports multi-platform container image builds using [Docker buildx bake](https://docs.docker.com/build/bake/). See [docker-bake.hcl](docker-bake.hcl)
+
 ## Dependencies
 1. MySQL database instance
 
