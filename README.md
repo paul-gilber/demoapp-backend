@@ -3,6 +3,19 @@ This project was forked from: [arjungautam1/fullstack-backend](https://github.co
 
 See [repository configuration](docs/repository-configuration/README.md)
 
+## Features
+1. Provides consistent development environment across users using [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers). See [configuration](.devcontainer/devcontainer.json)
+
+2. Uses [git pre-commit hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) to prevent Workflow failures caused by trivial errors like linter errors. This [pre-commit hook](.githooks/pre-commit) is shared across users through [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) using [postCreateCommand.sh](.devcontainer/postCreateCommand.sh) which sets hooks path to `.githooks`
+```sh
+# .devcontainer/postCreateCommand.sh
+git config core.hooksPath .githooks
+```
+
+3. Uses [Docker Compose](https://docs.docker.com/compose/) to enable local deployment of the `application` (demoapp-backend) including all `dependencies` (mysql). See [compose.yaml](deploy/docker-compose/compose.yaml)
+
+4. Provides sample [pull request checklist](.github/pull_request_template.md)
+
 ## Dependencies
 1. MySQL database instance
 
