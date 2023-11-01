@@ -18,6 +18,8 @@ git config core.hooksPath .githooks
 
 5. Supports multi-platform container image builds using [Docker buildx bake](https://docs.docker.com/build/bake/). See [docker-bake.hcl](docker-bake.hcl)
 
+6. Uses [Container Structure Tests](https://github.com/GoogleContainerTools/container-structure-test) for running metadata, command and file existence tests to ensure consistency of image builds. See [container-structure-test.yaml](container-structure-test.yaml)
+
 ## Dependencies
 1. MySQL database instance
 
