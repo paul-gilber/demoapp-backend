@@ -14,7 +14,7 @@ git config core.hooksPath .githooks
 
 3. Uses [Docker Compose](https://docs.docker.com/compose/) to enable local deployment of the `application` (demoapp-backend) including all `dependencies` (mysql). See [compose.yaml](deploy/docker-compose/compose.yaml)
 
-4. Provides sample [pull request checklist](.github/pull_request_template.md)
+4. Provides [pull request checklist](.github/pull_request_template.md). See [sample pull request](https://github.com/paul-gilber/demoapp-backend/pull/34)
 
 ## Dependencies
 1. MySQL database instance
