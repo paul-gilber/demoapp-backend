@@ -10,6 +10,7 @@ services:
     environment:
       # Enable Docker BuildKit https://docs.docker.com/build/buildkit/
       DOCKER_BUILDKIT: '1'
+      DOCKER_REGISTRY_URL: ''    # Required for Maven build
       # Externalized Spring Configuration: https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-external-config.html
       # Connect to MySQL: mysql --host=mysql --user=$SPRING_DATASOURCE_USERNAME --password=$SPRING_DATASOURCE_PASSWORD demoapp
       SPRING_DATASOURCE_USERNAME: root

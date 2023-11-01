@@ -116,7 +116,7 @@ docker build -f Containerfile.multistage -t demoapp-backend:latest .
 ## Run Application from Visual Studio Code Dev Container
 ### Run Application using Java
 ```sh
-java -jar target/demoapp-backend-0.0.1-SNAPSHOT.jar
+java -jar target/demoapp-backend-1.0.0-SNAPSHOT.jar
 ```
 ### Run Application using Docker Compose
 [Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. Then, with a single command, you create and start all the services from your configuration.
@@ -169,5 +169,5 @@ docker compose --project-directory deploy/docker-compose down # remove container
 
 Run below command to run [test](container-structure-test.yaml) for `demoapp-backend`
 ```sh
-container-structure-test test --image demoapp-backend --config container-structure-test.yaml
+container-structure-test test --image demoapp-backend:latest --config container-structure-test.yaml
 ```
