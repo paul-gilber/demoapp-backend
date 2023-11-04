@@ -160,7 +160,7 @@ services:
 
 docker compose --project-directory deploy/docker-compose up
 docker compose --project-directory deploy/docker-compose up --build # rebuild application image, only applicable if `build` field is enabled
-docker compose --project-directory deploy/docker-compose down # remove containers, networks and volumes created by docker compose
+docker compose --project-directory deploy/docker-compose down --volumes # remove containers, networks and volumes created by docker compose
 
 ```
 

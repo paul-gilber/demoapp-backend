@@ -43,3 +43,8 @@ template: |
   ```sh
   DEMOAPP_BACKEND_IMAGE="ghcr.io/$OWNER/$REPOSITORY:v$RESOLVED_VERSION" docker compose --project-directory deploy/docker-compose up
   ```
+
+  ## Uninstall from the command line
+  ```sh
+  docker compose --project-directory deploy/docker-compose down --volumes
+  ```
