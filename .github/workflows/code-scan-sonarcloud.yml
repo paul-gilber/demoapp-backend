@@ -92,8 +92,8 @@ jobs:
           mvn -B verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Drevision=${{ env.CI_ACTION_REF_NAME }} \
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} \
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization=${{ env.CI_REPOSITORY_OWNER }} \
+            -Dsonar.projectKey=${{ env.CI_REPOSITORY_OWNER }}_${{ env.CI_REPOSITORY_NAME }} \
             -Dmaven.test.skip=true \
             -Ddockerfile.skip=true
         env:
@@ -112,8 +112,8 @@ jobs:
           mvn -B verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Drevision=${{ env.CI_ACTION_REF_NAME }} \
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} \
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization=${{ env.CI_REPOSITORY_OWNER }} \
+            -Dsonar.projectKey=${{ env.CI_REPOSITORY_OWNER }}_${{ env.CI_REPOSITORY_NAME }} \
             -Dsonar.pullrequest.provider=GitHub \
             -Dsonar.pullrequest.github.repository=${{ github.repository }} \
             -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} \
